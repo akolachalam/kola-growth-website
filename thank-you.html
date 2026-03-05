@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're Booked — Move Partners</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: oklch(0.97 0.008 75);
+            --bg-card: oklch(0.995 0.004 75);
+            --bg-alt: oklch(0.935 0.012 75);
+            --text: oklch(0.17 0.02 55);
+            --text-2: oklch(0.38 0.015 55);
+            --text-3: oklch(0.50 0.01 55);
+            --accent: oklch(0.48 0.16 50);
+            --accent-bg: oklch(0.95 0.025 55);
+            --accent-hover: oklch(0.42 0.16 50);
+            --border: oklch(0.88 0.01 75);
+            --border-strong: oklch(0.78 0.015 55);
+            --font-display: 'Sora', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 6px;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
+        body {
+            background: var(--bg);
+            min-height: 100vh;
+        }
+
+        /* Warm noise texture */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            mix-blend-mode: multiply;
+        }
+
+        /* Layout */
+        .page {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: clamp(3rem, 8vh, 6rem) clamp(1.5rem, 4vw, 3rem);
+            display: flex;
+            flex-direction: column;
+            gap: clamp(4rem, 8vh, 7rem);
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+        }
+
+        .section-label {
+            font-family: var(--font-display);
+            font-size: clamp(0.8rem, 1vw, 0.95rem);
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            margin-bottom: clamp(1.5rem, 3vh, 2.5rem);
+        }
+
+        .rule {
+            width: 80px;
+            height: 3px;
+            background: var(--accent);
+            border: none;
+            margin: 0.8rem 0 0;
+        }
+
+        /* Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s var(--ease-out),
+                        transform 0.6s var(--ease-out);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Hero */
+        .hero {
+            padding: clamp(2rem, 6vh, 4rem) 0 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .hero h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+        }
+        .hero-sub {
+            font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+            color: var(--text-2);
+            font-weight: 400;
+            line-height: 1.45;
+            max-width: 550px;
+        }
+        .calendar-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-top: 0.5rem;
+            padding: 0.7rem 1.5rem;
+            background: var(--accent);
+            color: var(--bg);
+            font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+            font-weight: 700;
+            font-family: var(--font-display);
+            border: none;
+            border-radius: var(--radius);
+            cursor: default;
+            transition: background 0.2s;
+            align-self: flex-start;
+        }
+        .calendar-cta svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Pillars — What to Expect */
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border-top: 1px solid var(--border);
+        }
+        .pillar {
+            padding: clamp(1.5rem, 2.5vw, 2.5rem) clamp(1.2rem, 2vw, 2rem);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .pillar:last-child { border-right: none; }
+        .pillar-num {
+            font-family: var(--font-display);
+            font-size: clamp(0.8rem, 1vw, 0.9rem);
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.06em;
+        }
+        .pillar h3 {
+            font-size: clamp(1.15rem, 1.5vw, 1.4rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+        .pillar p {
+            font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+            color: var(--text-2);
+            line-height: 1.5;
+        }
+
+        /* Timeline */
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border-top: 3px solid var(--accent);
+        }
+        .tl-item {
+            padding: clamp(1.5rem, 2.5vw, 2.5rem) clamp(1rem, 1.5vw, 1.5rem);
+            border-right: 1px solid var(--border);
+            position: relative;
+        }
+        .tl-item:last-child { border-right: none; }
+        .tl-item::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: clamp(1rem, 1.5vw, 1.5rem);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 3px solid var(--bg);
+        }
+        .tl-time {
+            font-family: var(--font-display);
+            font-size: clamp(0.8rem, 1vw, 0.9rem);
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.5rem;
+        }
+        .tl-desc {
+            font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+            font-weight: 500;
+            color: var(--text-2);
+            line-height: 1.35;
+        }
+
+        /* FAQ Accordion */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+        }
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+        .faq-item:first-child {
+            border-top: 1px solid var(--border);
+        }
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 0;
+            cursor: pointer;
+            user-select: none;
+        }
+        .faq-question h3 {
+            font-size: clamp(1rem, 1.3vw, 1.15rem);
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1.3;
+        }
+        .faq-chevron {
+            font-size: 0.75rem;
+            color: var(--text-3);
+            transition: transform 0.3s var(--ease-out);
+            flex-shrink: 0;
+            margin-left: 1.5rem;
+        }
+        .faq-item.open .faq-chevron {
+            transform: rotate(180deg);
+            color: var(--accent);
+        }
+        .faq-answer {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.35s var(--ease-out);
+        }
+        .faq-item.open .faq-answer {
+            grid-template-rows: 1fr;
+        }
+        .faq-answer-inner {
+            overflow: hidden;
+        }
+        .faq-answer-text {
+            padding: 0 0 1.5rem;
+            font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+            line-height: 1.7;
+            color: var(--text-2);
+        }
+
+        /* Proof Section */
+        .proof-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: clamp(1.5rem, 3vh, 2.5rem);
+        }
+        .proof-stats {
+            display: flex;
+            gap: clamp(1.5rem, 3vw, 3rem);
+        }
+        .proof-stat {
+            text-align: right;
+        }
+        .proof-stat-num {
+            font-family: var(--font-display);
+            font-size: clamp(1.3rem, 2vw, 1.8rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .proof-stat-label {
+            font-size: clamp(0.78rem, 0.9vw, 0.85rem);
+            color: var(--text-3);
+            font-weight: 500;
+        }
+
+        .cases-list {
+            display: flex;
+            flex-direction: column;
+        }
+        .case-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            align-items: baseline;
+            padding: 1.2rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .case-row:first-child { border-top: 1px solid var(--border); }
+        .case-name {
+            font-family: var(--font-display);
+            font-size: clamp(1rem, 1.3vw, 1.15rem);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.3rem;
+        }
+        .case-desc {
+            font-size: clamp(0.9rem, 1.1vw, 1rem);
+            color: var(--text-2);
+            line-height: 1.5;
+        }
+        .case-metric {
+            text-align: right;
+            white-space: nowrap;
+        }
+        .case-metric-num {
+            font-family: var(--font-display);
+            font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: -0.02em;
+        }
+        .case-metric-label {
+            font-size: clamp(0.78rem, 0.9vw, 0.85rem);
+            color: var(--text-3);
+            font-weight: 500;
+        }
+
+        /* Quote */
+        .quote {
+            font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+            font-style: italic;
+            color: var(--text-2);
+            padding-left: 1.2rem;
+            border-left: 3px solid var(--accent);
+            line-height: 1.65;
+            margin-top: 2rem;
+            max-width: 700px;
+        }
+        .quote cite {
+            display: block;
+            margin-top: 0.8rem;
+            font-style: normal;
+            font-size: clamp(0.85rem, 1vw, 0.9rem);
+            color: var(--text-3);
+            font-weight: 600;
+        }
+
+        /* Bonus */
+        .bonus {
+            background: var(--accent-bg);
+            border: 2px solid var(--accent);
+            border-radius: var(--radius);
+            padding: clamp(2rem, 3vw, 3rem);
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .bonus-label {
+            font-family: var(--font-display);
+            font-size: clamp(0.8rem, 1vw, 0.9rem);
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .bonus h2 {
+            font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+        }
+        .bonus p {
+            font-size: clamp(1rem, 1.2vw, 1.1rem);
+            color: var(--text-2);
+            line-height: 1.5;
+            max-width: 550px;
+        }
+
+        /* Footer */
+        .footer-cta {
+            padding: clamp(1rem, 3vh, 2rem) 0 clamp(2rem, 4vh, 3rem);
+        }
+        .footer-cta h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2.2rem, 4vw, 3.5rem);
+            color: var(--accent);
+            letter-spacing: -0.04em;
+        }
+        .footer-cta p {
+            font-size: clamp(1rem, 1.3vw, 1.15rem);
+            color: var(--text-3);
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            .pillars { grid-template-columns: 1fr; border-top: none; }
+            .pillar {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 1.2rem 0;
+            }
+            .pillar:first-child { border-top: 1px solid var(--border); }
+            .pillar:last-child { border-bottom: none; }
+
+            .timeline { grid-template-columns: repeat(2, 1fr); }
+            .tl-item:nth-child(2) { border-right: none; }
+
+            .proof-header { flex-direction: column; align-items: flex-start; }
+            .proof-stats { align-self: flex-start; }
+            .proof-stat { text-align: left; }
+
+            .case-row { grid-template-columns: 1fr; gap: 0.5rem; }
+            .case-metric { text-align: left; }
+        }
+
+        @media (max-width: 480px) {
+            .timeline { grid-template-columns: 1fr; }
+            .tl-item { border-right: none; border-bottom: 1px solid var(--border); }
+            .tl-item:last-child { border-bottom: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            html { scroll-behavior: auto; }
+            .reveal { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <div class="page">
+
+        <!-- HERO -->
+        <section class="hero reveal">
+            <h1>You're Booked</h1>
+            <hr class="rule">
+            <p class="hero-sub">Here's everything you need to know before our call.</p>
+            <div class="calendar-cta">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Accept Your Calendar Invite
+            </div>
+        </section>
+
+        <!-- WHAT TO EXPECT -->
+        <section class="reveal">
+            <h2 class="section-title">What to Expect on the Call</h2>
+            <div class="pillars">
+                <div class="pillar">
+                    <span class="pillar-num">01</span>
+                    <h3>Review Your ICP</h3>
+                    <p>We'll map your ideal customer profile together — who to target, what titles, which industries.</p>
+                </div>
+                <div class="pillar">
+                    <span class="pillar-num">02</span>
+                    <h3>See Live Outreach</h3>
+                    <p>Real prospect research and sample messages written for your market — not a generic demo.</p>
+                </div>
+                <div class="pillar">
+                    <span class="pillar-num">03</span>
+                    <h3>Walk Through ROI</h3>
+                    <p>Plug in your numbers and see exactly what predictable outbound could generate.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 90-DAY ROADMAP -->
+        <section class="reveal">
+            <h2 class="section-title">How It Works — 90 Days</h2>
+            <div class="timeline">
+                <div class="tl-item">
+                    <div class="tl-time">Week 1-2</div>
+                    <div class="tl-desc">Onboarding + ICP + Domains</div>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-time">Week 3-4</div>
+                    <div class="tl-desc">Infrastructure + First Lists</div>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-time">Month 2</div>
+                    <div class="tl-desc">Campaigns Launch + First Replies</div>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-time">Month 3</div>
+                    <div class="tl-desc">Optimization + Velocity Ramps</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQs -->
+        <section class="reveal">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>How long until we see results?</h3>
+                        <span class="faq-chevron">&#9660;</span>
+                    </div>
+                    <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                        Infrastructure goes live 1 week after signup and message volume scales up over the first month. First replies start coming in week 2. Expect booked demos as early as end of week 2, usually by week 3-4. Pipeline compounds from there.
+                    </div></div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>What if the meetings aren't qualified?</h3>
+                        <span class="faq-chevron">&#9660;</span>
+                    </div>
+                    <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                        You define the ICP. We use a 5-tool enrichment waterfall with deep scoring and segmentation to make sure every prospect matches your criteria. On the call, we'll show you exactly how this targeting works with real data.
+                    </div></div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>We've tried outbound before — how is this different?</h3>
+                        <span class="faq-chevron">&#9660;</span>
+                    </div>
+                    <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                        Most outbound fails because of bad data, generic messaging, or no infrastructure. We own the full stack: dedicated sending domains with proper DNS, inbox warming, AI-powered prospect research, and multi-channel execution across email, LinkedIn, and phone. It's a system, not a spray-and-pray.
+                    </div></div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>Our market is too niche — can you find our buyers?</h3>
+                        <span class="faq-chevron">&#9660;</span>
+                    </div>
+                    <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                        That's actually where we excel. Our multi-source data waterfall crosses 5 separate databases to find verified contacts in even the most specialized industries. On the call, we'll show you live research for your specific market.
+                    </div></div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>How much of my time will this take?</h3>
+                        <span class="faq-chevron">&#9660;</span>
+                    </div>
+                    <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                        This is fully done-for-you. You'll spend about 2 hours in the first week on ICP definition, then receive weekly Slack updates. We handle everything else — infrastructure, list building, messaging, sending, and response handling.
+                    </div></div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>What's included in the price?</h3>
+                        <span class="faq-chevron">&#9660;</span>
+                    </div>
+                    <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                        Full infrastructure (dedicated domains, DNS, inbox warming), AI deep-research on every prospect, multi-draft messaging, multi-channel execution (email + LinkedIn + phone), real-time response handling, and weekly performance reporting. No hidden fees, no per-lead charges.
+                    </div></div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>Can we start with a pilot?</h3>
+                        <span class="faq-chevron">&#9660;</span>
+                    </div>
+                    <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                        Our minimum engagement is structured around the time it takes to see real results — typically 3-6 months. Outbound is a compound system; cutting it short before the data compounds means you won't see the full picture. We'll walk through the ROI math on the call so you can see exactly what to expect.
+                    </div></div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>How many meetings should we expect?</h3>
+                        <span class="faq-chevron">&#9660;</span>
+                    </div>
+                    <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                        It depends on your market, volume, and close rate — which is why we use a live ROI calculator on the call. With conservative benchmarks (2% reply rate, 5% positive, 70% show rate), most clients see 5-15 qualified meetings per month from email alone.
+                    </div></div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>What do I need to provide to get started?</h3>
+                        <span class="faq-chevron">&#9660;</span>
+                    </div>
+                    <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                        Just your time for a 1-hour ICP definition session in week 1. We'll need access to your brand assets (logo, colors) for domain setup, and any existing case studies or customer stories. Everything else — data, infrastructure, messaging — we build from scratch.
+                    </div></div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>What happens after onboarding?</h3>
+                        <span class="faq-chevron">&#9660;</span>
+                    </div>
+                    <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                        Campaigns go live in month 2. You'll receive weekly performance reports via Slack, real-time positive reply notifications, and monthly optimization reviews. We continuously refine targeting, messaging, and channel mix based on live data.
+                    </div></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROOF -->
+        <section class="reveal">
+            <div class="proof-header">
+                <h2 class="section-title" style="margin-bottom:0">Results That Speak</h2>
+                <div class="proof-stats">
+                    <div class="proof-stat">
+                        <div class="proof-stat-num">60+</div>
+                        <div class="proof-stat-label">Projects</div>
+                    </div>
+                    <div class="proof-stat">
+                        <div class="proof-stat-num">$1.3M+</div>
+                        <div class="proof-stat-label">Pipeline</div>
+                    </div>
+                    <div class="proof-stat">
+                        <div class="proof-stat-num">4,000+</div>
+                        <div class="proof-stat-label">Qualified Leads</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cases-list">
+                <div class="case-row">
+                    <div>
+                        <div class="case-name">Logistics SaaS</div>
+                        <div class="case-desc">Strengthened pipeline during critical acquisition process. High-volume power dialing with 33% of transfers converting to SQLs.</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">25%+</div>
+                        <div class="case-metric-label">connect rate sustained</div>
+                    </div>
+                </div>
+                <div class="case-row">
+                    <div>
+                        <div class="case-name">AI Video Platform</div>
+                        <div class="case-desc">12-week multi-channel strategy across EdTech, Finance, and Digital Media. Ten email mailboxes plus high-velocity power-dialing.</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">$165K</div>
+                        <div class="case-metric-label">new pipeline</div>
+                    </div>
+                </div>
+                <div class="case-row">
+                    <div>
+                        <div class="case-name">Marketing Analytics</div>
+                        <div class="case-desc">Multi-channel campaign across Retail, Hospitality, and B2B SaaS. Demand Gen personas hit 57.8% open rate.</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">61</div>
+                        <div class="case-metric-label">meetings (20% above quota)</div>
+                    </div>
+                </div>
+                <div class="case-row">
+                    <div>
+                        <div class="case-name">CEO-Led Executive Outreach</div>
+                        <div class="case-desc">1,940 targeted invites into CPG, Consumer Electronics, and Agency sectors. Discovered "gold mine" in Directors/VPs of Innovation.</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">52%</div>
+                        <div class="case-metric-label">peak connect rate</div>
+                    </div>
+                </div>
+            </div>
+
+            <blockquote class="quote">
+                "I've initiated more outbound conversations in the time we've been working together than in my entire previous tenure here. These meetings are great — we're putting together six figures in new pipeline from these leads alone."
+                <cite>— US Sales Leader, AI Video Platform</cite>
+            </blockquote>
+        </section>
+
+        <!-- FAST-ACTION BONUS -->
+        <section class="reveal">
+            <div class="bonus">
+                <span class="bonus-label">48-Hour Bonus</span>
+                <h2>4,000 LinkedIn DMs/Month</h2>
+                <p>Commit within 48 hours of your call and we'll include 4,000 additional LinkedIn DMs per month — on us.</p>
+            </div>
+        </section>
+
+        <!-- FOOTER CTA -->
+        <section class="footer-cta reveal">
+            <h2>See You on the Call</h2>
+            <p>Don't forget to accept your calendar invite.</p>
+        </section>
+
+    </div>
+
+    <script>
+        // Reveal on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // FAQ Accordion
+        function toggleFaq(el) {
+            const item = el.closest('.faq-item');
+            const isOpen = item.classList.contains('open');
+
+            // Close all
+            document.querySelectorAll('.faq-item.open').forEach(openItem => {
+                openItem.classList.remove('open');
+            });
+
+            // Open clicked (if it was closed)
+            if (!isOpen) {
+                item.classList.add('open');
+            }
+        }
+    </script>
+</body>
+</html>

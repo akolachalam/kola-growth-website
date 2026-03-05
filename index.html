@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kola Growth Agency — Done-for-You Outbound That Works</title>
+    <meta name="description" content="We build and run your entire outbound system — infrastructure, targeting, and multi-channel execution. Qualified meetings on your calendar, guaranteed.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: oklch(0.97 0.008 75);
+            --bg-card: oklch(0.995 0.004 75);
+            --bg-alt: oklch(0.935 0.012 75);
+            --text: oklch(0.17 0.02 55);
+            --text-2: oklch(0.38 0.015 55);
+            --text-3: oklch(0.50 0.01 55);
+            --accent: oklch(0.48 0.16 50);
+            --accent-bg: oklch(0.95 0.025 55);
+            --accent-hover: oklch(0.42 0.16 50);
+            --border: oklch(0.88 0.01 75);
+            --border-strong: oklch(0.78 0.015 55);
+            --font-display: 'Sora', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 6px;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
+        body { background: var(--bg); }
+
+        /* Noise overlay */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            mix-blend-mode: multiply;
+        }
+
+        /* ── Nav ── */
+        .site-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: oklch(0.97 0.008 75 / 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 clamp(1.5rem, 4vw, 3rem);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: clamp(1.5rem, 3vw, 2.5rem);
+            list-style: none;
+        }
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-2);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+        .nav-cta {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--bg) !important;
+            background: var(--accent);
+            padding: 0.5rem 1.2rem;
+            border-radius: var(--radius);
+            transition: background 0.2s;
+        }
+        .nav-cta:hover { background: var(--accent-hover); color: var(--bg) !important; }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--text);
+        }
+        .mobile-toggle span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: currentColor;
+            margin: 5px 0;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        /* ── Sections ── */
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: clamp(4rem, 10vh, 8rem) clamp(1.5rem, 4vw, 3rem);
+        }
+        .section-narrow { max-width: 900px; }
+
+        .section-label {
+            font-family: var(--font-display);
+            font-size: clamp(0.8rem, 1vw, 0.9rem);
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.8rem;
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            margin-bottom: clamp(1rem, 2vh, 1.5rem);
+        }
+        .section-sub {
+            font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+            color: var(--text-2);
+            line-height: 1.55;
+            max-width: 620px;
+        }
+
+        .rule {
+            width: 80px;
+            height: 3px;
+            background: var(--accent);
+            border: none;
+        }
+
+        /* Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* ── Hero ── */
+        .hero {
+            padding-top: calc(64px + clamp(4rem, 10vh, 8rem));
+            padding-bottom: clamp(4rem, 8vh, 6rem);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: clamp(1.5rem, 4vw, 3rem);
+            padding-right: clamp(1.5rem, 4vw, 3rem);
+        }
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3.2rem, 6.5vw, 5.5rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.0;
+            max-width: 800px;
+        }
+        .hero-sub {
+            font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+            color: var(--text-2);
+            font-weight: 400;
+            line-height: 1.45;
+            max-width: 560px;
+            margin-top: 1.5rem;
+        }
+        .hero-proof {
+            margin-top: 1.5rem;
+            font-size: clamp(0.9rem, 1.1vw, 1rem);
+            color: var(--text-3);
+            font-weight: 500;
+        }
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            padding: 0.8rem 1.8rem;
+            background: var(--accent);
+            color: var(--bg);
+            font-family: var(--font-display);
+            font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+            font-weight: 700;
+            border: none;
+            border-radius: var(--radius);
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .hero-cta:hover { background: var(--accent-hover); }
+        .hero-cta svg { width: 16px; height: 16px; }
+
+        /* ── Problem ── */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border-top: 1px solid var(--border);
+            margin-top: clamp(1.5rem, 3vh, 2.5rem);
+        }
+        .problem-item {
+            padding: clamp(1.5rem, 2.5vw, 2.5rem) clamp(1.2rem, 2vw, 2rem);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .problem-item:last-child { border-right: none; }
+        .problem-num {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 3vw, 2.8rem);
+            font-weight: 800;
+            color: var(--border-strong);
+            letter-spacing: -0.04em;
+            line-height: 1;
+        }
+        .problem-item h3 {
+            font-family: var(--font-display);
+            font-size: clamp(1.1rem, 1.4vw, 1.3rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+        .problem-item p {
+            font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+            color: var(--text-2);
+            line-height: 1.5;
+        }
+
+        /* ── Pillars ── */
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border-top: 1px solid var(--border);
+            margin-top: clamp(1.5rem, 3vh, 2.5rem);
+        }
+        .pillar {
+            padding: clamp(1.5rem, 2.5vw, 2.5rem) clamp(1.2rem, 2vw, 2rem);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .pillar:last-child { border-right: none; }
+        .pillar-label {
+            font-family: var(--font-display);
+            font-size: clamp(0.8rem, 1vw, 0.9rem);
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+        .pillar h3 {
+            font-family: var(--font-display);
+            font-size: clamp(1.15rem, 1.5vw, 1.4rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+        .pillar-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .pillar-list li {
+            font-size: clamp(0.92rem, 1.1vw, 1.05rem);
+            color: var(--text-2);
+            line-height: 1.4;
+            padding-left: 1rem;
+            position: relative;
+        }
+        .pillar-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.55em;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+        .pillar-list .hl { color: var(--text); font-weight: 600; }
+
+        /* ── Proof ── */
+        .proof-intro {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 3rem;
+            align-items: end;
+            margin-bottom: clamp(2rem, 4vh, 3rem);
+        }
+        .proof-stats {
+            display: flex;
+            gap: clamp(1.5rem, 3vw, 3rem);
+        }
+        .proof-stat { text-align: right; }
+        .proof-stat-num {
+            font-family: var(--font-display);
+            font-size: clamp(1.3rem, 2vw, 1.8rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .proof-stat-label {
+            font-size: clamp(0.78rem, 0.9vw, 0.85rem);
+            color: var(--text-3);
+            font-weight: 500;
+        }
+
+        .cases-list { display: flex; flex-direction: column; }
+        .case-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            align-items: baseline;
+            padding: 1.2rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .case-row:first-child { border-top: 1px solid var(--border); }
+        .case-name {
+            font-family: var(--font-display);
+            font-size: clamp(1rem, 1.3vw, 1.15rem);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.3rem;
+        }
+        .case-desc {
+            font-size: clamp(0.9rem, 1.1vw, 1rem);
+            color: var(--text-2);
+            line-height: 1.5;
+        }
+        .case-metric { text-align: right; white-space: nowrap; }
+        .case-metric-num {
+            font-family: var(--font-display);
+            font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: -0.02em;
+        }
+        .case-metric-label {
+            font-size: clamp(0.78rem, 0.9vw, 0.85rem);
+            color: var(--text-3);
+            font-weight: 500;
+        }
+
+        .quote {
+            font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+            font-style: italic;
+            color: var(--text-2);
+            padding-left: 1.2rem;
+            border-left: 3px solid var(--accent);
+            line-height: 1.65;
+            margin-top: 2.5rem;
+            max-width: 700px;
+        }
+        .quote cite {
+            display: block;
+            margin-top: 0.8rem;
+            font-style: normal;
+            font-size: clamp(0.85rem, 1vw, 0.9rem);
+            color: var(--text-3);
+            font-weight: 600;
+        }
+
+        /* ── Dog Food ── */
+        .dogfood {
+            background: var(--accent-bg);
+            border-top: 3px solid var(--accent);
+            border-bottom: 1px solid var(--border);
+        }
+        .dogfood-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: clamp(3rem, 6vh, 5rem) clamp(1.5rem, 4vw, 3rem);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(3rem, 5vw, 5rem);
+            align-items: center;
+        }
+        .dogfood h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            margin-bottom: 1rem;
+        }
+        .dogfood p {
+            font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+            color: var(--text-2);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .dogfood-stat {
+            font-family: var(--font-display);
+            font-weight: 800;
+            color: var(--accent);
+        }
+        .dogfood-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .dogfood-list li {
+            font-size: clamp(1rem, 1.2vw, 1.1rem);
+            color: var(--text-2);
+            line-height: 1.5;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+        .dogfood-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.55em;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+        .dogfood-list strong { color: var(--text); }
+
+        /* ── Timeline ── */
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border-top: 3px solid var(--accent);
+            margin-top: clamp(1.5rem, 3vh, 2.5rem);
+        }
+        .tl-item {
+            padding: clamp(1.5rem, 2.5vw, 2.5rem) clamp(1rem, 1.5vw, 1.5rem);
+            border-right: 1px solid var(--border);
+            position: relative;
+        }
+        .tl-item:last-child { border-right: none; }
+        .tl-item::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: clamp(1rem, 1.5vw, 1.5rem);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 3px solid var(--bg);
+        }
+        .tl-time {
+            font-family: var(--font-display);
+            font-size: clamp(0.8rem, 1vw, 0.9rem);
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.5rem;
+        }
+        .tl-title {
+            font-family: var(--font-display);
+            font-size: clamp(1rem, 1.3vw, 1.15rem);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.4rem;
+        }
+        .tl-desc {
+            font-size: clamp(0.9rem, 1.1vw, 1rem);
+            font-weight: 500;
+            color: var(--text-2);
+            line-height: 1.4;
+        }
+
+        /* ── Guarantee ── */
+        .guarantee {
+            background: var(--accent-bg);
+            border: 2px solid var(--accent);
+            border-radius: var(--radius);
+            padding: clamp(2rem, 3vw, 3rem);
+            margin-top: clamp(3rem, 5vh, 4rem);
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            max-width: 700px;
+        }
+        .guarantee-label {
+            font-family: var(--font-display);
+            font-size: clamp(0.8rem, 1vw, 0.9rem);
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .guarantee h3 {
+            font-family: var(--font-display);
+            font-size: clamp(1.4rem, 2vw, 1.8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+        .guarantee p {
+            font-size: clamp(1rem, 1.2vw, 1.1rem);
+            color: var(--text-2);
+            line-height: 1.55;
+        }
+
+        /* ── FAQ ── */
+        .faq-list { display: flex; flex-direction: column; margin-top: clamp(1.5rem, 3vh, 2.5rem); }
+        .faq-item { border-bottom: 1px solid var(--border); }
+        .faq-item:first-child { border-top: 1px solid var(--border); }
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 0;
+            cursor: pointer;
+            user-select: none;
+        }
+        .faq-question h3 {
+            font-family: var(--font-display);
+            font-size: clamp(1rem, 1.3vw, 1.15rem);
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1.3;
+        }
+        .faq-chevron {
+            font-size: 0.75rem;
+            color: var(--text-3);
+            transition: transform 0.3s var(--ease-out);
+            flex-shrink: 0;
+            margin-left: 1.5rem;
+        }
+        .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--accent); }
+        .faq-answer {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.35s var(--ease-out);
+        }
+        .faq-item.open .faq-answer { grid-template-rows: 1fr; }
+        .faq-answer-inner { overflow: hidden; }
+        .faq-answer-text {
+            padding: 0 0 1.5rem;
+            font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+            line-height: 1.7;
+            color: var(--text-2);
+        }
+
+        /* ── CTA ── */
+        .final-cta {
+            border-top: 1px solid var(--border);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: clamp(4rem, 10vh, 8rem) clamp(1.5rem, 4vw, 3rem);
+        }
+        .final-cta h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.0;
+            max-width: 600px;
+        }
+        .final-cta p {
+            font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+            color: var(--text-2);
+            margin-top: 1rem;
+            max-width: 500px;
+            line-height: 1.5;
+        }
+        .final-cta a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            padding: 0.8rem 1.8rem;
+            background: var(--accent);
+            color: var(--bg);
+            font-family: var(--font-display);
+            font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+            font-weight: 700;
+            border: none;
+            border-radius: var(--radius);
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .final-cta a:hover { background: var(--accent-hover); }
+
+        /* ── Footer ── */
+        .site-footer {
+            border-top: 1px solid var(--border);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem clamp(1.5rem, 4vw, 3rem);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-left {
+            font-size: 0.85rem;
+            color: var(--text-3);
+        }
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+        .footer-links a {
+            font-size: 0.85rem;
+            color: var(--text-3);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--text); }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .problem-grid, .pillars {
+                grid-template-columns: 1fr;
+                border-top: none;
+            }
+            .problem-item, .pillar {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 1.2rem 0;
+            }
+            .problem-item:first-child, .pillar:first-child { border-top: 1px solid var(--border); }
+            .problem-item:last-child, .pillar:last-child { border-bottom: none; }
+
+            .timeline { grid-template-columns: repeat(2, 1fr); }
+            .tl-item:nth-child(2) { border-right: none; }
+
+            .dogfood-inner { grid-template-columns: 1fr; }
+            .proof-intro { grid-template-columns: 1fr; }
+            .proof-stats { justify-content: flex-start; }
+            .proof-stat { text-align: left; }
+
+            .case-row { grid-template-columns: 1fr; gap: 0.5rem; }
+            .case-metric { text-align: left; }
+        }
+
+        @media (max-width: 600px) {
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 64px;
+                left: 0;
+                right: 0;
+                background: var(--bg);
+                border-bottom: 1px solid var(--border);
+                padding: 1.5rem clamp(1.5rem, 4vw, 3rem);
+                gap: 1rem;
+            }
+            .mobile-toggle { display: block; }
+
+            .timeline { grid-template-columns: 1fr; }
+            .tl-item { border-right: none; border-bottom: 1px solid var(--border); }
+            .tl-item:last-child { border-bottom: none; }
+
+            .site-footer { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            html { scroll-behavior: auto; }
+            .reveal { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <!-- NAV -->
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">Kola Growth</a>
+            <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#system">How It Works</a></li>
+                <li><a href="#results">Results</a></li>
+                <li><a href="#process">Process</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="https://calendly.com/arjun-kola/discovery" class="nav-cta">Book a Call</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="reveal">
+            <h1>We Run Your Outbound<br>So You Don't Have To</h1>
+            <hr class="rule" style="margin-top:1.2rem">
+            <p class="hero-sub">Infrastructure, targeting, and multi-channel execution — fully managed. Qualified meetings on your calendar, or we refund you.</p>
+            <p class="hero-proof">The email that got you here? That's exactly what we do for clients.</p>
+            <a href="https://calendly.com/arjun-kola/discovery" class="hero-cta">
+                Book Discovery Call
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- PROBLEM -->
+    <section class="section reveal" id="problem">
+        <div class="section-label">The Problem</div>
+        <h2 class="section-title">Most outbound fails for three reasons</h2>
+        <div class="problem-grid">
+            <div class="problem-item">
+                <div class="problem-num">01</div>
+                <h3>Bad data</h3>
+                <p>Bought lists, unverified emails, wrong titles. You're emailing people who left that role two years ago.</p>
+            </div>
+            <div class="problem-item">
+                <div class="problem-num">02</div>
+                <h3>Generic messaging</h3>
+                <p>Same template to 10,000 people. No research, no personalization, no reason for anyone to reply.</p>
+            </div>
+            <div class="problem-item">
+                <div class="problem-num">03</div>
+                <h3>No infrastructure</h3>
+                <p>Sending from your main domain with no warming, no DNS setup, no reputation monitoring. Landing in spam.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE SYSTEM -->
+    <section class="section reveal" id="system">
+        <div class="section-label">The System</div>
+        <h2 class="section-title">We own the full stack</h2>
+        <p class="section-sub">Three pillars, one integrated system. Not three separate services bolted together.</p>
+        <div class="pillars">
+            <div class="pillar">
+                <span class="pillar-label">01 — Infrastructure</span>
+                <h3>Built to land in primary</h3>
+                <ul class="pillar-list">
+                    <li>Dedicated domains + full DNS config</li>
+                    <li>Inbox warming + reputation monitoring</li>
+                    <li><span class="hl">4,000+ emails/day capacity</span></li>
+                    <li>LinkedIn InMail at scale</li>
+                </ul>
+            </div>
+            <div class="pillar">
+                <span class="pillar-label">02 — Targeting</span>
+                <h3>Find the right people</h3>
+                <ul class="pillar-list">
+                    <li><span class="hl">5-tool enrichment waterfall</span></li>
+                    <li>ICP scoring + segmentation</li>
+                    <li>TAM mapping, multi-geo coverage</li>
+                    <li>Verified contacts, not bought lists</li>
+                </ul>
+            </div>
+            <div class="pillar">
+                <span class="pillar-label">03 — Execution</span>
+                <h3>Say the right thing</h3>
+                <ul class="pillar-list">
+                    <li><span class="hl">AI deep-research on every prospect</span></li>
+                    <li>Multi-draft messaging tournaments</li>
+                    <li>Email + LinkedIn + Phone layered</li>
+                    <li>Real-time response handling</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section class="section reveal" id="results">
+        <div class="proof-intro">
+            <div>
+                <div class="section-label">Results</div>
+                <h2 class="section-title" style="margin-bottom:0">Work that speaks for itself</h2>
+            </div>
+            <div class="proof-stats">
+                <div class="proof-stat">
+                    <div class="proof-stat-num">60+</div>
+                    <div class="proof-stat-label">Projects</div>
+                </div>
+                <div class="proof-stat">
+                    <div class="proof-stat-num">$1.3M+</div>
+                    <div class="proof-stat-label">Pipeline</div>
+                </div>
+                <div class="proof-stat">
+                    <div class="proof-stat-num">4,000+</div>
+                    <div class="proof-stat-label">Qualified Leads</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cases-list">
+            <div class="case-row">
+                <div>
+                    <div class="case-name">Logistics SaaS</div>
+                    <div class="case-desc">Strengthened pipeline during critical acquisition. High-volume power dialing with 33% of transfers converting to SQLs.</div>
+                </div>
+                <div class="case-metric">
+                    <div class="case-metric-num">25%+</div>
+                    <div class="case-metric-label">connect rate sustained</div>
+                </div>
+            </div>
+            <div class="case-row">
+                <div>
+                    <div class="case-name">AI Video Platform</div>
+                    <div class="case-desc">12-week multi-channel campaign across EdTech, Finance, and Digital Media. Ten mailboxes plus high-velocity power-dialing.</div>
+                </div>
+                <div class="case-metric">
+                    <div class="case-metric-num">$165K</div>
+                    <div class="case-metric-label">new pipeline</div>
+                </div>
+            </div>
+            <div class="case-row">
+                <div>
+                    <div class="case-name">Marketing Analytics</div>
+                    <div class="case-desc">Multi-channel campaign across Retail, Hospitality, and B2B SaaS. Demand Gen personas hit 57.8% open rate.</div>
+                </div>
+                <div class="case-metric">
+                    <div class="case-metric-num">61</div>
+                    <div class="case-metric-label">meetings (20% above quota)</div>
+                </div>
+            </div>
+            <div class="case-row">
+                <div>
+                    <div class="case-name">CEO-Led Executive Outreach</div>
+                    <div class="case-desc">1,940 targeted invites into CPG, Consumer Electronics, and Agency sectors. Discovered untapped buyer segment in Directors of Innovation.</div>
+                </div>
+                <div class="case-metric">
+                    <div class="case-metric-num">52%</div>
+                    <div class="case-metric-label">peak connect rate</div>
+                </div>
+            </div>
+        </div>
+
+        <blockquote class="quote">
+            "I've initiated more outbound conversations in the time we've been working together than in my entire previous tenure here. These meetings are great — we're putting together six figures in new pipeline from these leads alone."
+            <cite>— US Sales Leader, AI Video Platform</cite>
+        </blockquote>
+    </section>
+
+    <!-- DOG FOOD -->
+    <section class="dogfood reveal">
+        <div class="dogfood-inner">
+            <div>
+                <div class="section-label">Why Us</div>
+                <h2>We eat our own dog food</h2>
+                <p>You're probably here because our outbound reached you. That email you received? We wrote it, sent it from infrastructure we built, to a list we researched — the same system we run for every client.</p>
+                <p>We send <span class="dogfood-stat">4,000 emails a day</span> for our own business. It's how we know what works.</p>
+            </div>
+            <div>
+                <ul class="dogfood-list">
+                    <li><strong>Built by GTM operators.</strong> Years inside SaaS sales leadership — not consultants who've never carried a quota.</li>
+                    <li><strong>Milestone pricing, not retainers.</strong> We don't invoice until we hit the meeting count we agreed on. Miss the mark? Full refund, no questions.</li>
+                    <li><strong>You keep everything.</strong> Domains, mailboxes, copy, lists — all yours. No lock-in, ever.</li>
+                    <li><strong>Multi-channel by default.</strong> Email, LinkedIn, and phone working as one system — not three separate vendors.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="section reveal" id="process">
+        <div class="section-label">Process</div>
+        <h2 class="section-title">First meetings in 3 weeks</h2>
+        <p class="section-sub">Infrastructure goes live in week 1. Pipeline compounds from there.</p>
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">Week 1–2</div>
+                <div class="tl-title">Onboarding</div>
+                <div class="tl-desc">ICP definition, domain setup, inbox warming, first lists built.</div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">Week 3–4</div>
+                <div class="tl-title">First Campaigns</div>
+                <div class="tl-desc">Messages go out. First replies come in. Messaging tournaments begin.</div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">Month 2</div>
+                <div class="tl-title">Full Velocity</div>
+                <div class="tl-desc">All channels active. LinkedIn + phone layered on top of email signals.</div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">Month 3</div>
+                <div class="tl-title">Optimization</div>
+                <div class="tl-desc">Data-driven refinement. Volume ramps. Pipeline compounds.</div>
+            </div>
+        </div>
+
+        <div class="guarantee">
+            <span class="guarantee-label">Our Guarantee</span>
+            <h3>Hit the milestone or get your money back</h3>
+            <p>We agree on a meeting count upfront. We don't invoice until we reach it. If we don't deliver, you get a full refund — no questions asked. Everything we build (domains, mailboxes, lists, copy) stays with you regardless.</p>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section section-narrow reveal" id="faq">
+        <div class="section-label">FAQ</div>
+        <h2 class="section-title">Common questions</h2>
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>How long until we see results?</h3>
+                    <span class="faq-chevron">&#9660;</span>
+                </div>
+                <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                    Infrastructure goes live in week 1 and message volume scales up over the first month. First replies start in week 2. Expect booked meetings by week 3-4. Pipeline compounds from there.
+                </div></div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>What if the meetings aren't qualified?</h3>
+                    <span class="faq-chevron">&#9660;</span>
+                </div>
+                <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                    You define the ICP. We use a 5-tool enrichment waterfall with deep scoring and segmentation to make sure every prospect matches your criteria. We'll show you exactly how this targeting works on the discovery call.
+                </div></div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>We've tried outbound before — how is this different?</h3>
+                    <span class="faq-chevron">&#9660;</span>
+                </div>
+                <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                    Most outbound fails because of bad data, generic messaging, or no infrastructure. We own the full stack: dedicated sending domains with proper DNS, inbox warming, AI-powered prospect research, and multi-channel execution. It's a system, not a spray-and-pray.
+                </div></div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>Our market is too niche — can you find our buyers?</h3>
+                    <span class="faq-chevron">&#9660;</span>
+                </div>
+                <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                    That's where we excel. Our enrichment waterfall crosses 5 separate databases to find verified contacts in specialized industries. On the discovery call, we'll show you live research for your specific market.
+                </div></div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>How much of my time will this take?</h3>
+                    <span class="faq-chevron">&#9660;</span>
+                </div>
+                <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                    Fully done-for-you. About 2 hours in week 1 for ICP definition, then weekly Slack updates. We handle everything: infrastructure, list building, messaging, sending, and response handling.
+                </div></div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>How many meetings should we expect?</h3>
+                    <span class="faq-chevron">&#9660;</span>
+                </div>
+                <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                    Depends on your market and volume. With conservative benchmarks (2% reply rate, 5% positive, 70% show rate), most clients see 5-15 qualified meetings per month from email alone. We'll walk through the math on your call.
+                </div></div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>What's included in the price?</h3>
+                    <span class="faq-chevron">&#9660;</span>
+                </div>
+                <div class="faq-answer"><div class="faq-answer-inner"><div class="faq-answer-text">
+                    Full infrastructure (dedicated domains, DNS, warming), AI deep-research on every prospect, multi-draft messaging, multi-channel execution (email + LinkedIn + phone), real-time response handling, and weekly reporting. No hidden fees, no per-lead charges.
+                </div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final-cta reveal">
+        <h2>Let's build your pipeline</h2>
+        <p>30-minute discovery call. We'll research your market live and show you exactly what outbound looks like for your ICP.</p>
+        <a href="https://calendly.com/arjun-kola/discovery">
+            Book Discovery Call
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-left">&copy; 2026 Kola Growth Agency</div>
+        <ul class="footer-links">
+            <li><a href="mailto:arjun@kolagrowthagency.com">arjun@kolagrowthagency.com</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        // Reveal on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // FAQ accordion
+        function toggleFaq(el) {
+            const item = el.closest('.faq-item');
+            const isOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+            if (!isOpen) item.classList.add('open');
+        }
+
+        // Close mobile nav on link click
+        document.querySelectorAll('.nav-links a').forEach(a => {
+            a.addEventListener('click', () => {
+                document.querySelector('.nav-links').classList.remove('open');
+            });
+        });
+    </script>
+</body>
+</html>

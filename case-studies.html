@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Studies — Kola Growth Agency</title>
+    <meta name="description" content="Real outbound results from B2B companies. Pipeline built, meetings booked, revenue generated — the numbers behind our system.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: oklch(0.97 0.008 75);
+            --bg-card: oklch(0.995 0.004 75);
+            --bg-alt: oklch(0.935 0.012 75);
+            --text: oklch(0.17 0.02 55);
+            --text-2: oklch(0.38 0.015 55);
+            --text-3: oklch(0.50 0.01 55);
+            --accent: oklch(0.48 0.16 50);
+            --accent-bg: oklch(0.95 0.025 55);
+            --accent-hover: oklch(0.42 0.16 50);
+            --border: oklch(0.88 0.01 75);
+            --border-strong: oklch(0.78 0.015 55);
+            --font-display: 'Sora', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 6px;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
+        body { background: var(--bg); }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            mix-blend-mode: multiply;
+        }
+
+        /* ── Nav ── */
+        .site-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: oklch(0.97 0.008 75 / 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 clamp(1.5rem, 4vw, 3rem);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: clamp(1.5rem, 3vw, 2.5rem);
+            list-style: none;
+        }
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-2);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+        .nav-cta {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--bg) !important;
+            background: var(--accent);
+            padding: 0.5rem 1.2rem;
+            border-radius: var(--radius);
+            transition: background 0.2s;
+        }
+        .nav-cta:hover { background: var(--accent-hover); color: var(--bg) !important; }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--text);
+        }
+        .mobile-toggle span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: currentColor;
+            margin: 5px 0;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        /* ── Sections ── */
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: clamp(4rem, 10vh, 8rem) clamp(1.5rem, 4vw, 3rem);
+        }
+
+        .section-label {
+            font-family: var(--font-display);
+            font-size: clamp(0.8rem, 1vw, 0.9rem);
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.8rem;
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            margin-bottom: clamp(1rem, 2vh, 1.5rem);
+        }
+        .section-sub {
+            font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+            color: var(--text-2);
+            line-height: 1.55;
+            max-width: 620px;
+        }
+
+        .rule {
+            width: 80px;
+            height: 3px;
+            background: var(--accent);
+            border: none;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* ── Hero ── */
+        .hero {
+            padding-top: calc(64px + clamp(4rem, 10vh, 8rem));
+            padding-bottom: clamp(3rem, 6vh, 5rem);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: clamp(1.5rem, 4vw, 3rem);
+            padding-right: clamp(1.5rem, 4vw, 3rem);
+        }
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.0;
+            max-width: 700px;
+        }
+        .hero-sub {
+            font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+            color: var(--text-2);
+            font-weight: 400;
+            line-height: 1.5;
+            max-width: 560px;
+            margin-top: 1.5rem;
+        }
+
+        /* ── Aggregate Stats ── */
+        .agg-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            margin-top: clamp(2rem, 4vh, 3rem);
+        }
+        .agg-stat {
+            padding: clamp(1.2rem, 2vw, 2rem) clamp(1rem, 1.5vw, 1.5rem);
+            border-right: 1px solid var(--border);
+        }
+        .agg-stat:last-child { border-right: none; }
+        .agg-stat-num {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--accent);
+        }
+        .agg-stat-label {
+            font-size: clamp(0.85rem, 1vw, 0.95rem);
+            color: var(--text-3);
+            font-weight: 500;
+            margin-top: 0.2rem;
+        }
+
+        /* ── Case Study ── */
+        .case {
+            border-top: 1px solid var(--border);
+        }
+        .case-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: clamp(3rem, 6vh, 5rem) clamp(1.5rem, 4vw, 3rem);
+        }
+        .case-alt { background: var(--accent-bg); }
+        .case-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            align-items: start;
+            margin-bottom: clamp(1.5rem, 3vh, 2.5rem);
+        }
+        .case-industry {
+            font-family: var(--font-display);
+            font-size: clamp(0.78rem, 0.95vw, 0.88rem);
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.6rem;
+        }
+        .case-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+        }
+        .case-num {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            font-weight: 800;
+            color: var(--border);
+            letter-spacing: -0.04em;
+            line-height: 1;
+        }
+
+        .case-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(2rem, 4vw, 4rem);
+        }
+        .case-narrative h3 {
+            font-family: var(--font-display);
+            font-size: clamp(0.8rem, 1vw, 0.9rem);
+            font-weight: 700;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.6rem;
+            margin-top: 1.5rem;
+        }
+        .case-narrative h3:first-child { margin-top: 0; }
+        .case-narrative p {
+            font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+            color: var(--text-2);
+            line-height: 1.6;
+        }
+        .case-narrative ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-top: 0.3rem;
+        }
+        .case-narrative ul li {
+            font-size: clamp(0.92rem, 1.1vw, 1.02rem);
+            color: var(--text-2);
+            line-height: 1.5;
+            padding-left: 1rem;
+            position: relative;
+        }
+        .case-narrative ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.55em;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .case-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            align-self: start;
+        }
+        .case-metric {
+            padding: clamp(1rem, 1.8vw, 1.5rem);
+            border-bottom: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+        }
+        .case-metric:nth-child(even) { border-right: none; }
+        .case-metric:nth-last-child(-n+2) { border-bottom: none; }
+        .case-metric-num {
+            font-family: var(--font-display);
+            font-size: clamp(1.3rem, 2vw, 1.8rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--accent);
+        }
+        .case-metric-label {
+            font-size: clamp(0.78rem, 0.9vw, 0.88rem);
+            color: var(--text-3);
+            font-weight: 500;
+            margin-top: 0.15rem;
+            line-height: 1.3;
+        }
+        .case-metrics--single {
+            grid-template-columns: 1fr;
+        }
+        .case-metrics--single .case-metric {
+            border-right: none;
+        }
+        .case-metrics--single .case-metric:last-child { border-bottom: none; }
+        .case-metrics--triple {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        .case-metrics--triple .case-metric { border-right: 1px solid var(--border); }
+        .case-metrics--triple .case-metric:last-child { border-right: none; }
+        .case-metrics--triple .case-metric { border-bottom: none; }
+
+        .case-quote {
+            font-size: clamp(1rem, 1.3vw, 1.15rem);
+            font-style: italic;
+            color: var(--text-2);
+            padding-left: 1.2rem;
+            border-left: 3px solid var(--accent);
+            line-height: 1.6;
+            margin-top: 1.5rem;
+            grid-column: 1 / -1;
+        }
+        .case-quote cite {
+            display: block;
+            margin-top: 0.6rem;
+            font-style: normal;
+            font-size: clamp(0.82rem, 0.95vw, 0.88rem);
+            color: var(--text-3);
+            font-weight: 600;
+        }
+
+        /* ── CTA ── */
+        .final-cta {
+            border-top: 1px solid var(--border);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: clamp(4rem, 10vh, 8rem) clamp(1.5rem, 4vw, 3rem);
+        }
+        .final-cta h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.0;
+            max-width: 600px;
+        }
+        .final-cta p {
+            font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+            color: var(--text-2);
+            margin-top: 1rem;
+            max-width: 500px;
+            line-height: 1.5;
+        }
+        .final-cta a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            padding: 0.8rem 1.8rem;
+            background: var(--accent);
+            color: var(--bg);
+            font-family: var(--font-display);
+            font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+            font-weight: 700;
+            border: none;
+            border-radius: var(--radius);
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .final-cta a:hover { background: var(--accent-hover); }
+
+        /* ── Footer ── */
+        .site-footer {
+            border-top: 1px solid var(--border);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem clamp(1.5rem, 4vw, 3rem);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-left {
+            font-size: 0.85rem;
+            color: var(--text-3);
+        }
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+        .footer-links a {
+            font-size: 0.85rem;
+            color: var(--text-3);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--text); }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .agg-stats { grid-template-columns: repeat(2, 1fr); }
+            .agg-stat:nth-child(2) { border-right: none; }
+            .agg-stat:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+
+            .case-header { grid-template-columns: 1fr; }
+            .case-num { display: none; }
+            .case-body { grid-template-columns: 1fr; }
+            .case-metrics { order: -1; }
+            .case-metrics--triple { grid-template-columns: 1fr 1fr; }
+            .case-metrics--triple .case-metric:last-child { grid-column: 1 / -1; border-top: 1px solid var(--border); }
+        }
+
+        @media (max-width: 600px) {
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 64px;
+                left: 0;
+                right: 0;
+                background: var(--bg);
+                border-bottom: 1px solid var(--border);
+                padding: 1.5rem clamp(1.5rem, 4vw, 3rem);
+                gap: 1rem;
+            }
+            .mobile-toggle { display: block; }
+
+            .agg-stats { grid-template-columns: 1fr; }
+            .agg-stat { border-right: none; border-bottom: 1px solid var(--border); }
+            .agg-stat:last-child { border-bottom: none; }
+
+            .case-metrics { grid-template-columns: 1fr; }
+            .case-metric { border-right: none !important; border-bottom: 1px solid var(--border); }
+            .case-metric:last-child { border-bottom: none; }
+            .case-metrics--triple { grid-template-columns: 1fr; }
+
+            .site-footer { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            html { scroll-behavior: auto; }
+            .reveal { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <!-- NAV -->
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Kola Growth</a>
+            <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/#system">How It Works</a></li>
+                <li><a href="/#results">Results</a></li>
+                <li><a href="https://calendly.com/d/cx5x-3h3-y3b/intro-meeting-30-min" class="nav-cta">Book a Call</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="reveal">
+            <div class="section-label">Case Studies</div>
+            <h1>Proven Systems, Real Pipeline</h1>
+            <hr class="rule" style="margin-top:1.2rem">
+            <p class="hero-sub">Six engagements across different markets, company stages, and outbound challenges. Each one shows what happens when the system is built right.</p>
+        </div>
+    </section>
+
+    <!-- AGGREGATE STATS -->
+    <section class="section reveal" style="padding-top:0">
+        <div class="agg-stats">
+            <div class="agg-stat">
+                <div class="agg-stat-num">60+</div>
+                <div class="agg-stat-label">Projects delivered</div>
+            </div>
+            <div class="agg-stat">
+                <div class="agg-stat-num">$1.3M+</div>
+                <div class="agg-stat-label">Pipeline generated</div>
+            </div>
+            <div class="agg-stat">
+                <div class="agg-stat-num">567</div>
+                <div class="agg-stat-label">Executive connections</div>
+            </div>
+            <div class="agg-stat">
+                <div class="agg-stat-num">52%</div>
+                <div class="agg-stat-label">Peak connect rate</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CASE 1: Logistics SaaS -->
+    <section class="case reveal">
+        <div class="case-inner">
+            <div class="case-header">
+                <div>
+                    <div class="case-industry">Logistics SaaS</div>
+                    <h2 class="case-title">Acquisition-Ready Pipeline</h2>
+                </div>
+                <div class="case-num">01</div>
+            </div>
+            <div class="case-body">
+                <div class="case-narrative">
+                    <h3>The Problem</h3>
+                    <p>Mid-acquisition process, working directly with the VP of Sales after two failed vendor attempts. Needed to demonstrate outbound viability to strengthen acquisition metrics.</p>
+
+                    <h3>The System</h3>
+                    <p>High-volume power dialing campaign with systematic follow-up cadence. Multi-touch approach combining calls, emails, and a qualification framework designed to convert conversations into SQL-ready transfers.</p>
+
+                    <h3>The Result</h3>
+                    <p>Delivered strengthened pipeline and GTM momentum during critical acquisition discussions with a leading industry player. 33% of transfers converted to SQLs.</p>
+                </div>
+                <div class="case-metrics">
+                    <div class="case-metric">
+                        <div class="case-metric-num">8,800+</div>
+                        <div class="case-metric-label">Calls executed</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">1,500+</div>
+                        <div class="case-metric-label">Live conversations</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">25%+</div>
+                        <div class="case-metric-label">Connect rate sustained</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">33%</div>
+                        <div class="case-metric-label">Transfers to SQLs</div>
+                    </div>
+                </div>
+                <blockquote class="case-quote">
+                    "Great work this week, Move team. I'm really impressed with the effort and the learnings. Looking forward to next week."
+                    <cite>— VP of Sales</cite>
+                </blockquote>
+            </div>
+        </div>
+    </section>
+
+    <!-- CASE 2: Enterprise AI Platform -->
+    <section class="case case-alt reveal">
+        <div class="case-inner">
+            <div class="case-header">
+                <div>
+                    <div class="case-industry">Enterprise AI Platform</div>
+                    <h2 class="case-title">Founder-Led Executive Access</h2>
+                </div>
+                <div class="case-num">02</div>
+            </div>
+            <div class="case-body">
+                <div class="case-narrative">
+                    <h3>The Problem</h3>
+                    <p>Enterprise data platform needed direct access to CTOs, CDOs, and VPs during an acquisition process. Required founder-level credibility for senior buyer conversations.</p>
+
+                    <h3>The System</h3>
+                    <p>Founder-led LinkedIn outreach targeting CTOs, CDOs, and VPs of Data. Hyper-personalized messaging leveraging founder credibility to bypass gatekeepers and secure executive-level engagement.</p>
+
+                    <h3>The Result</h3>
+                    <p>Created measurable GTM traction at a critical business moment, dramatically outperforming SDR-led LinkedIn benchmarks at this seniority level. Replies focused on Calendly links and active follow-up.</p>
+                </div>
+                <div class="case-metrics">
+                    <div class="case-metric">
+                        <div class="case-metric-num">~150</div>
+                        <div class="case-metric-label">Direct replies from senior data leaders</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">25–40%</div>
+                        <div class="case-metric-label">Connection acceptance rate</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">20–35%</div>
+                        <div class="case-metric-label">Connect-to-reply conversion</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">66%</div>
+                        <div class="case-metric-label">Peak week conversion</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CASE 3: CEO-Led Executive Outreach -->
+    <section class="case reveal">
+        <div class="case-inner">
+            <div class="case-header">
+                <div>
+                    <div class="case-industry">CPG & Consumer Electronics</div>
+                    <h2 class="case-title">CEO-Led Market Entry</h2>
+                </div>
+                <div class="case-num">03</div>
+            </div>
+            <div class="case-body">
+                <div class="case-narrative">
+                    <h3>The Problem</h3>
+                    <p>Needed to leverage CEO credibility to bypass gatekeepers and establish authority with senior decision-makers in CPG, Consumer Electronics, and Agency sectors.</p>
+
+                    <h3>The System</h3>
+                    <p>Agile 15-week sprint cycles with triple-daily response monitoring, weekly lead refreshes, and hyper-personalized executive-to-executive messaging.</p>
+
+                    <h3>The Result</h3>
+                    <p>1,940 targeted invites converted to 567 executive connections, 206 direct replies, and 27 highly qualified leads. Discovered an untapped "gold mine" persona in Directors and VPs of Innovation.</p>
+                </div>
+                <div class="case-metrics">
+                    <div class="case-metric">
+                        <div class="case-metric-num">567</div>
+                        <div class="case-metric-label">Executive connections</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">52%</div>
+                        <div class="case-metric-label">Peak connection acceptance</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">206</div>
+                        <div class="case-metric-label">Direct replies</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">13.1%</div>
+                        <div class="case-metric-label">Reply-to-interested conversion</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CASE 4: AI Video Platform -->
+    <section class="case case-alt reveal">
+        <div class="case-inner">
+            <div class="case-header">
+                <div>
+                    <div class="case-industry">AI Video Platform</div>
+                    <h2 class="case-title">Multi-Channel Pipeline Engine</h2>
+                </div>
+                <div class="case-num">04</div>
+            </div>
+            <div class="case-body">
+                <div class="case-narrative">
+                    <h3>The Problem</h3>
+                    <p>Leading generative AI video provider struggling with consistent outbound pipeline. Needed to bridge the gap between innovative product and enterprise stakeholders in EdTech, Finance, and Digital Media.</p>
+
+                    <h3>The System</h3>
+                    <p>12-week multi-channel strategy deploying ten email mailboxes plus high-velocity power-dialing. Intent-based targeting with personalized campaigns for banking and niche sectors.</p>
+
+                    <h3>The Result</h3>
+                    <p>Generated $165K in new pipeline and 42 qualified meetings. Transformed outbound from sporadic to systematic.</p>
+                </div>
+                <div class="case-metrics">
+                    <div class="case-metric">
+                        <div class="case-metric-num">$165K</div>
+                        <div class="case-metric-label">New pipeline generated</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">42</div>
+                        <div class="case-metric-label">Qualified meetings booked</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">10</div>
+                        <div class="case-metric-label">Mailboxes deployed</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">12 wks</div>
+                        <div class="case-metric-label">Campaign duration</div>
+                    </div>
+                </div>
+                <blockquote class="case-quote">
+                    "I've initiated more outbound conversations in the time we've been working together than in my entire previous tenure here. These meetings are great — we're putting together six figures in new pipeline from these leads alone."
+                    <cite>— US Sales Leader</cite>
+                </blockquote>
+            </div>
+        </div>
+    </section>
+
+    <!-- CASE 5: Marketing Analytics -->
+    <section class="case reveal">
+        <div class="case-inner">
+            <div class="case-header">
+                <div>
+                    <div class="case-industry">Marketing Analytics SaaS</div>
+                    <h2 class="case-title">Multi-Channel Lead Generation</h2>
+                </div>
+                <div class="case-num">05</div>
+            </div>
+            <div class="case-body">
+                <div class="case-narrative">
+                    <h3>The Problem</h3>
+                    <p>Targeting marketing decision-makers across Retail, Hospitality, and B2B SaaS. Goal: 50 discovery meetings via synchronized email, LinkedIn, and cold calling.</p>
+
+                    <h3>The System</h3>
+                    <p>Multi-channel campaign synchronizing email, LinkedIn, and cold calling to reach marketing decision-makers with comprehensive coverage. Demand Generation personas received tailored sequences.</p>
+
+                    <h3>The Result</h3>
+                    <p>Booked 61 meetings — 20% above quota. Email contributed roughly half of all meetings. Over 5,000 cold call attempts executed for comprehensive coverage.</p>
+                </div>
+                <div class="case-metrics case-metrics--triple">
+                    <div class="case-metric">
+                        <div class="case-metric-num">61</div>
+                        <div class="case-metric-label">Meetings booked (20% above quota)</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">57.8%</div>
+                        <div class="case-metric-label">Open rate (Demand Gen personas)</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">5,000+</div>
+                        <div class="case-metric-label">Cold call attempts</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CASE 6: Product Management Platform -->
+    <section class="case case-alt reveal">
+        <div class="case-inner">
+            <div class="case-header">
+                <div>
+                    <div class="case-industry">Product Management Platform</div>
+                    <h2 class="case-title">Disrupting Entrenched Competitors</h2>
+                </div>
+                <div class="case-num">06</div>
+            </div>
+            <div class="case-body">
+                <div class="case-narrative">
+                    <h3>The Problem</h3>
+                    <p>Breaking into a market dominated by legacy incumbents. Senior product leaders locked into complex contracts. Needed C-suite engagement at Software 500 companies to demonstrate superior UX and strategic alignment.</p>
+
+                    <h3>The System</h3>
+                    <p>Targeted 200+ senior leaders with a "feedback-first" engagement model — framing outreach as product feedback requests rather than sales pitches. Built warm prospect foundations with leaders actively evaluating alternatives.</p>
+
+                    <h3>The Result</h3>
+                    <p>Achieved 41.9% overall response rate. Secured 20 meetings with global tech giants. Moved 33% of responders into active pipeline stages. Bypassed tool inertia by creating genuine evaluation conversations.</p>
+                </div>
+                <div class="case-metrics">
+                    <div class="case-metric">
+                        <div class="case-metric-num">41.9%</div>
+                        <div class="case-metric-label">Overall response rate</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">20</div>
+                        <div class="case-metric-label">Meetings with global tech giants</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">200+</div>
+                        <div class="case-metric-label">Senior leaders targeted</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-num">33%</div>
+                        <div class="case-metric-label">Responders into active pipeline</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final-cta reveal">
+        <h2>Ready to build your pipeline?</h2>
+        <p>30-minute discovery call. We'll research your market live and show you exactly what outbound looks like for your ICP.</p>
+        <a href="https://calendly.com/d/cx5x-3h3-y3b/intro-meeting-30-min">
+            Book Discovery Call
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-left">&copy; 2026 Kola Growth Agency</div>
+        <ul class="footer-links">
+            <li><a href="mailto:arjun@kolagrowthagency.com">arjun@kolagrowthagency.com</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        document.querySelectorAll('.nav-links a').forEach(a => {
+            a.addEventListener('click', () => {
+                document.querySelector('.nav-links').classList.remove('open');
+            });
+        });
+    </script>
+</body>
+</html>

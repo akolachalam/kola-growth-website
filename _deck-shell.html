@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Move Partners — Sales Call Deck</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: oklch(0.97 0.008 75);
+            --bg-card: oklch(0.995 0.004 75);
+            --bg-alt: oklch(0.935 0.012 75);
+            --text: oklch(0.17 0.02 55);
+            --text-2: oklch(0.38 0.015 55);
+            --text-3: oklch(0.50 0.01 55);
+            --accent: oklch(0.48 0.16 50);
+            --accent-bg: oklch(0.95 0.025 55);
+            --accent-hover: oklch(0.42 0.16 50);
+            --border: oklch(0.88 0.01 75);
+            --border-strong: oklch(0.78 0.015 55);
+            --font-display: 'Sora', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 6px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            scroll-behavior: smooth;
+        }
+
+        .deck-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none;
+        }
+        .deck-container::-webkit-scrollbar { display: none; }
+
+        /* Subtle warm noise texture */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            mix-blend-mode: multiply;
+        }
+
+        /* Slide Layout */
+        .slide {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: clamp(2rem, 5vh, 5rem) clamp(2rem, 8vw, 10rem);
+            position: relative;
+            z-index: 1;
+        }
+
+        .slide-inner {
+            width: 100%;
+            max-width: 1300px;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(1.5rem, 4vh, 3.5rem);
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+        }
+
+        .heading-xl {
+            font-size: clamp(3.2rem, 6.5vw, 6rem);
+            text-align: left;
+        }
+        .heading-lg {
+            font-size: clamp(2.4rem, 4vw, 3.8rem);
+            text-align: left;
+        }
+
+        .rule {
+            width: 120px;
+            height: 4px;
+            background: var(--accent);
+            border: none;
+            margin: 1rem 0 0;
+        }
+
+        .subtitle {
+            font-size: clamp(1.3rem, 2.2vw, 1.9rem);
+            color: var(--text-2);
+            font-weight: 400;
+            line-height: 1.4;
+            max-width: 800px;
+        }
+
+        /* Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Navigation */
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            z-index: 100;
+        }
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            border: 2px solid var(--border-strong);
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 0;
+            /* Invisible touch target expansion */
+            position: relative;
+        }
+        .nav-dot::before {
+            content: '';
+            position: absolute;
+            inset: -12px;
+        }
+        .nav-dot:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        .nav-dot:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+        .nav-dot.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: scale(1.3);
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-3);
+            z-index: 100;
+        }
+        .keyboard-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.95rem;
+            color: var(--text-3);
+            font-weight: 400;
+            opacity: 0;
+            animation: fadeHint 4s forwards 2s;
+        }
+        @keyframes fadeHint {
+            0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; }
+        }
+
+        /* ── Pillars (Slide 2) ── */
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border-top: 1px solid var(--border);
+        }
+        .pillar {
+            padding: clamp(2rem, 3vw, 3rem) clamp(1.5rem, 2.5vw, 2.5rem);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 1.4rem;
+        }
+        .pillar:last-child { border-right: none; }
+
+        .pillar-num {
+            font-family: var(--font-display);
+            font-size: clamp(0.9rem, 1.1vw, 1.05rem);
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .pillar-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 2.2vw, 2.2rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+        .pillar-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+        .pillar-list li {
+            font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+            line-height: 1.5;
+            color: var(--text-2);
+            padding-left: 1rem;
+            position: relative;
+        }
+        .pillar-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.55em;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+        .pillar-list .hl { color: var(--text); font-weight: 600; }
+
+        .slide--fill { justify-content: stretch; }
+        .slide--fill .slide-inner { flex: 1; }
+        .slide--wide { padding-left: clamp(2rem, 5vw, 5rem); padding-right: clamp(2rem, 5vw, 5rem); }
+        .slide--wide .slide-inner { max-width: 1440px; }
+
+        /* ── Diagnosis: Hypothesis (Slide 3) ── */
+        .heading--recede { color: var(--text-2); }
+        .diagnosis-hypothesis {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .diagnosis-claim {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-bottom: clamp(2rem, 4vh, 4rem);
+        }
+        .diagnosis-kicker {
+            font-family: var(--font-display);
+            font-size: clamp(0.85rem, 1vw, 1rem);
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        .diagnosis-thesis {
+            font-family: var(--font-display);
+            font-size: clamp(2.2rem, 3.8vw, 3.6rem);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.035em;
+            max-width: 22ch;
+            text-wrap: balance;
+        }
+        .diagnosis-support {
+            display: flex;
+            gap: clamp(2rem, 4vw, 4rem);
+            padding-top: clamp(1.5rem, 3vh, 2.5rem);
+            border-top: 2px solid var(--border);
+        }
+        .diagnosis-why {
+            color: var(--text-2);
+            font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+            line-height: 1.5;
+            flex: 1;
+        }
+        .diagnosis-gap-aside {
+            flex: 0 0 auto;
+            max-width: 34ch;
+            padding-left: clamp(1.5rem, 3vw, 2.5rem);
+            border-left: 3px solid var(--accent);
+        }
+        .diagnosis-gap-label {
+            font-family: var(--font-display);
+            font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-3);
+        }
+        .diagnosis-gap-text {
+            margin-top: 0.35rem;
+            color: var(--text-2);
+            line-height: 1.4;
+            font-size: clamp(1.05rem, 1.2vw, 1.15rem);
+        }
+
+        /* ── Diagnosis: Evidence (Slide 4) ── */
+        .diagnosis-side {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr auto;
+            gap: clamp(2rem, 4vw, 3.5rem);
+            flex: 1;
+        }
+        .diagnosis-card h3 {
+            font-family: var(--font-display);
+            font-size: clamp(1rem, 1.2vw, 1.15rem);
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        .diagnosis-list,
+        .diagnosis-q-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+        }
+        .diagnosis-list li,
+        .diagnosis-q-list li {
+            padding-left: 1rem;
+            position: relative;
+            color: var(--text-2);
+            line-height: 1.5;
+            font-size: clamp(1.1rem, 1.4vw, 1.3rem);
+        }
+        .diagnosis-list li::before,
+        .diagnosis-q-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.55em;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+        .diagnosis-q-list li::before {
+            background: color-mix(in oklch, var(--accent) 78%, white 22%);
+        }
+        .diagnosis-caveat {
+            grid-column: 1 / -1;
+            padding-top: clamp(1.2rem, 2.5vh, 2rem);
+            border-top: 2px solid var(--border);
+        }
+        .diagnosis-caveat-label {
+            font-family: var(--font-display);
+            font-size: clamp(0.9rem, 1vw, 1rem);
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.8rem;
+        }
+        .diagnosis-risk-inline {
+            display: flex;
+            gap: clamp(1.5rem, 3vw, 2.5rem);
+        }
+        .diagnosis-risk-inline p {
+            color: var(--text-2);
+            font-size: clamp(1.05rem, 1.25vw, 1.2rem);
+            line-height: 1.5;
+            flex: 1;
+        }
+        .diagnosis-label {
+            color: var(--text);
+            font-weight: 700;
+            font-family: var(--font-display);
+        }
+        .diagnosis-empty {
+            background: var(--bg-card);
+            border: 1px dashed var(--border-strong);
+            border-radius: var(--radius);
+            padding: 2rem;
+            color: var(--text-2);
+            line-height: 1.5;
+        }
+        .diagnosis-empty small {
+            display: block;
+            margin-top: 0.6rem;
+            color: var(--text-3);
+        }
+
+        /* ── Prospect Carousel (Slide 5) ── */
+        .prospect-stage {
+            position: relative;
+            width: 100%;
+            max-width: 1100px;
+            min-height: 400px;
+        }
+        .p-card {
+            position: absolute;
+            inset: 0;
+            background: var(--bg-card);
+            border: 3px solid var(--border-strong);
+            border-radius: var(--radius);
+            padding: clamp(2.5rem, 4vw, 3.5rem);
+            display: flex;
+            flex-direction: column;
+            gap: 1.4rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .p-card.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .p-card-name {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 2vw, 1.9rem);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .p-card-title {
+            font-size: clamp(1rem, 1.2vw, 1.2rem);
+            color: var(--text-2);
+            margin-top: 0.1rem;
+            line-height: 1.3;
+        }
+        .p-card-msg {
+            font-size: clamp(1.15rem, 1.5vw, 1.4rem);
+            line-height: 1.65;
+            color: var(--text-2);
+        }
+        .p-card-msg p { margin-bottom: 0.6em; }
+        .p-card-msg p:last-child { margin-bottom: 0; }
+
+        .prospect-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .prospect-nav-btn {
+            background: none;
+            border: 2px solid var(--border-strong);
+            border-radius: var(--radius);
+            color: var(--text-2);
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.7rem 1.5rem;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .prospect-nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .prospect-nav-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+        .prospect-nav-btn:disabled { opacity: 0.3; cursor: default; }
+        .prospect-nav-btn:disabled:hover { border-color: var(--border); color: var(--text-2); }
+        .prospect-counter {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-3);
+        }
+
+        .empty-state {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-3);
+            padding: 3rem;
+            border: 1px dashed var(--border);
+            border-radius: var(--radius);
+        }
+        .empty-state small {
+            display: block;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        /* Trial close / presenter prompts */
+        .prompt {
+            font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+            font-style: italic;
+            color: var(--text-2);
+            padding-left: 1.2rem;
+            border-left: 3px solid var(--accent);
+            max-width: 900px;
+            line-height: 1.5;
+        }
+        .prompt strong { color: var(--text); font-style: normal; }
+
+        /* ── Calculator (Slide 6) ── */
+        .calc-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: clamp(2rem, 4vw, 4rem);
+            align-items: start;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1.2rem;
+        }
+        .input-group label {
+            font-family: var(--font-display);
+            font-size: clamp(0.85rem, 1.1vw, 1rem);
+            font-weight: 700;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-pre, .input-suf {
+            position: absolute;
+            font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+            font-weight: 700;
+            color: var(--text-3);
+            font-family: var(--font-display);
+        }
+        .input-pre { left: 0.8rem; }
+        .input-suf { right: 0.8rem; }
+
+        input[type="number"] {
+            width: 100%;
+            background: var(--bg-card);
+            border: 2px solid var(--border-strong);
+            border-radius: var(--radius);
+            padding: 0.65rem 0.8rem 0.65rem 2.2rem;
+            font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+            font-weight: 700;
+            color: var(--text);
+            font-family: var(--font-display);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input[type="number"]:hover { border-color: var(--border-strong); }
+        input[type="number"]:focus { border-color: var(--accent); }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+        input[type="number"] { -moz-appearance: textfield; }
+
+        .funnel {
+            display: flex;
+            flex-direction: column;
+        }
+        .funnel-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .funnel-row:last-child { border-bottom: none; }
+        .funnel-label {
+            font-size: clamp(1.05rem, 1.4vw, 1.3rem);
+            color: var(--text-2);
+            font-weight: 500;
+        }
+        .funnel-val {
+            font-family: var(--font-display);
+            font-size: clamp(1.3rem, 1.8vw, 1.7rem);
+            font-weight: 700;
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+        }
+        .funnel-rate {
+            font-size: clamp(0.8rem, 1vw, 0.95rem);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .funnel-row.revenue {
+            margin-top: 1rem;
+            padding-top: 1.5rem;
+            border-top: 3px solid var(--accent);
+            border-bottom: none;
+        }
+        .funnel-row.revenue .funnel-label {
+            color: var(--text);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+        }
+        .funnel-row.revenue .funnel-val {
+            color: var(--accent);
+            font-size: clamp(1.8rem, 2.8vw, 2.8rem);
+        }
+
+        /* ── Pricing (Slide 7) ── */
+        .pricing-split {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: clamp(2rem, 3vw, 3rem);
+            max-width: 1100px;
+            align-items: start;
+        }
+        .price-us {
+            border: 3px solid var(--accent);
+            border-radius: var(--radius);
+            padding: clamp(2rem, 3vw, 3rem);
+            background: var(--accent-bg);
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .price-them {
+            padding: clamp(2rem, 3vw, 3rem);
+            border: 3px solid var(--border-strong);
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .price-label {
+            font-family: var(--font-display);
+            font-size: clamp(0.85rem, 1.1vw, 1rem);
+            font-weight: 700;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .price-amount {
+            font-family: var(--font-display);
+            font-size: clamp(3.5rem, 6.5vw, 6rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+        .price-us .price-amount { color: var(--accent); }
+        .price-them .price-amount {
+            color: var(--text-3);
+            text-decoration: line-through;
+            text-decoration-color: var(--border-strong);
+        }
+        .price-desc {
+            font-size: clamp(1rem, 1.2vw, 1.15rem);
+            color: var(--text-2);
+        }
+        .price-them .price-desc {
+            text-decoration: line-through;
+            text-decoration-color: var(--border-strong);
+            color: var(--text-3);
+        }
+        .breakdown {
+            font-size: clamp(0.9rem, 1.1vw, 1.05rem);
+            color: var(--text-3);
+            line-height: 1.7;
+            margin-top: 0.3rem;
+        }
+
+        .roi-badge {
+            display: inline-flex;
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 3.5vw, 3.5rem);
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: -0.02em;
+            padding: 1.2rem 3rem;
+            border: 3px solid var(--accent);
+            border-radius: var(--radius);
+        }
+
+        /* ── Timeline (Slide 8) ── */
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border-top: 3px solid var(--accent);
+            margin-top: 1rem;
+        }
+        .tl-item {
+            padding: clamp(1.8rem, 3vw, 3rem) clamp(1.2rem, 2vw, 2rem);
+            border-right: 2px solid var(--border-strong);
+            position: relative;
+        }
+        .tl-item:last-child { border-right: none; }
+        .tl-item::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: clamp(1.2rem, 2vw, 2rem);
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 3px solid var(--bg);
+        }
+        .tl-time {
+            font-family: var(--font-display);
+            font-size: clamp(0.85rem, 1.1vw, 1rem);
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.6rem;
+        }
+        .tl-desc {
+            font-size: clamp(1.3rem, 1.7vw, 1.6rem);
+            font-weight: 500;
+            color: var(--text-2);
+            line-height: 1.45;
+        }
+
+        /* ── Checklist (Slide 9) ── */
+        .checklist {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: clamp(1rem, 1.8vw, 1.4rem);
+            max-width: 1000px;
+        }
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            font-size: clamp(1.3rem, 1.8vw, 1.6rem);
+            font-weight: 500;
+            padding: 1.3rem 1.6rem;
+            border: 2px solid var(--border-strong);
+            border-radius: var(--radius);
+            transition: border-color 0.2s;
+        }
+        .check-item:hover { border-color: var(--border-strong); }
+        .check-num {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--accent);
+            flex-shrink: 0;
+            width: 2rem;
+            text-align: center;
+        }
+        .cta {
+            font-family: var(--font-display);
+            font-size: clamp(2.2rem, 4.5vw, 4rem);
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: -0.03em;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 3px solid var(--accent);
+        }
+
+        /* ── Objection Panel ── */
+        .objection-panel {
+            position: fixed;
+            inset: 0;
+            background: oklch(0.14 0.015 55);
+            color: oklch(0.93 0.008 75);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            padding: 3rem;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-y: auto;
+        }
+        .objection-panel.open { transform: translateY(0); }
+
+        .close-btn {
+            position: absolute;
+            top: 2rem;
+            right: 3rem;
+            background: none;
+            border: none;
+            color: oklch(0.93 0.008 75);
+            font-size: 2rem;
+            cursor: pointer;
+            font-family: var(--font-display);
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            transition: opacity 0.2s;
+        }
+        .close-btn:hover { opacity: 0.7; }
+        .close-btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .panel-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .panel-heading {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 800;
+            color: oklch(0.65 0.16 50);
+            margin-bottom: 2rem;
+            letter-spacing: -0.03em;
+        }
+        .obj-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .obj-section {
+            background: oklch(0.20 0.01 55);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+        }
+        .obj-section h3 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: oklch(0.65 0.16 50);
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.02em;
+        }
+        .obj-section p, .obj-section li {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: oklch(0.75 0.008 75);
+            margin-bottom: 0.6rem;
+        }
+        .obj-section ul, .obj-section ol { margin-left: 1.2rem; }
+        .obj-section strong { color: oklch(0.93 0.008 75); }
+        .obj-script {
+            font-style: italic;
+            color: oklch(0.65 0.16 50);
+            font-size: 1.15rem;
+            padding: 0.8rem 1rem;
+            background: oklch(0.14 0.015 55);
+            border-radius: var(--radius);
+            border-left: 3px solid oklch(0.65 0.16 50);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .diagnosis-support { flex-direction: column; gap: 1.2rem; }
+            .diagnosis-gap-aside { border-left: none; padding-left: 0; border-top: 1px solid var(--border); padding-top: 0.8rem; max-width: none; }
+            .diagnosis-side { grid-template-columns: 1fr; }
+            .diagnosis-risk-inline { flex-direction: column; gap: 0.5rem; }
+            .pillars {
+                grid-template-columns: 1fr;
+                border-top: none;
+            }
+            .pillar {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 1.2rem 0;
+            }
+            .pillar:first-child { border-top: 1px solid var(--border); }
+            .pillar:last-child { border-bottom: none; }
+
+            .calc-layout { grid-template-columns: 1fr; }
+            .pricing-split { grid-template-columns: 1fr; }
+            .timeline { grid-template-columns: repeat(2, 1fr); }
+            .tl-item:nth-child(2) { border-right: none; }
+            .checklist { grid-template-columns: 1fr; }
+            .obj-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            .slide { padding: 1.5rem; }
+            .timeline { grid-template-columns: 1fr; }
+            .tl-item { border-right: none; border-bottom: 2px solid var(--border-strong); }
+            .tl-item:last-child { border-bottom: none; }
+            .nav-dots { display: none; }
+        }
+
+        @media (max-height: 650px) {
+            .slide { padding: 1.2rem clamp(2rem, 8vw, 10rem); }
+            .slide-inner { gap: 1rem; }
+            .diagnosis-thesis { font-size: clamp(1.4rem, 2.2vw, 1.9rem); }
+            .diagnosis-support { gap: 1.5rem; }
+            .diagnosis-why,
+            .diagnosis-gap-text,
+            .diagnosis-list li,
+            .diagnosis-q-list li,
+            .diagnosis-risk-inline p { font-size: 0.84rem; }
+            .diagnosis-list,
+            .diagnosis-q-list { gap: 0.4rem; }
+            .pillar { padding: 0.8rem 1rem; gap: 0.5rem; }
+            .pillar-list { gap: 0.3rem; }
+            .input-group { margin-bottom: 0.6rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            html { scroll-behavior: auto; }
+            .reveal { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+    <div class="slide-counter" id="slideCounter" aria-live="polite">1 / 9</div>
+
+    <div class="deck-container" id="deckContainer">
+
+        <!-- SLIDE 1: TITLE -->
+        <section class="slide" aria-label="Title">
+            <div class="keyboard-hint" aria-hidden="true">arrow keys to navigate</div>
+            <div class="slide-inner">
+                <h1 class="heading-xl reveal">How We Get<br>You There</h1>
+                <hr class="rule reveal" style="transition-delay:0.1s">
+                <p class="subtitle reveal" style="transition-delay:0.18s">Done-for-you outbound. Three pillars, one system.</p>
+            </div>
+        </section>
+
+        <!-- SLIDE 2: THREE PILLARS -->
+        <section class="slide" aria-label="The System">
+            <div class="slide-inner">
+                <h2 class="heading-lg reveal">The System</h2>
+
+                <div class="pillars reveal" style="transition-delay:0.12s">
+                    <div class="pillar">
+                        <span class="pillar-num">01 &mdash; Infrastructure</span>
+                        <h3 class="pillar-title">Built to land in primary</h3>
+                        <ul class="pillar-list">
+                            <li>Dedicated domains + full DNS config</li>
+                            <li>Inbox warming + reputation monitoring</li>
+                            <li><span class="hl">LinkedIn InMail: 5,000+/account/mo</span></li>
+                        </ul>
+                    </div>
+                    <div class="pillar">
+                        <span class="pillar-num">02 &mdash; Targeting</span>
+                        <h3 class="pillar-title">Find the right people</h3>
+                        <ul class="pillar-list">
+                            <li><span class="hl">5-tool enrichment waterfall</span></li>
+                            <li>ICP scoring + segmentation</li>
+                            <li>TAM mapping, multi-geo coverage</li>
+                        </ul>
+                    </div>
+                    <div class="pillar">
+                        <span class="pillar-num">03 &mdash; Execution</span>
+                        <h3 class="pillar-title">Say the right thing</h3>
+                        <ul class="pillar-list">
+                            <li><span class="hl">AI deep-research on every prospect</span></li>
+                            <li>Multi-draft messaging tournament</li>
+                            <li>Multi-channel: Email + LinkedIn + Phone</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: ACCOUNT DIAGNOSIS — HYPOTHESIS -->
+        <section class="slide slide--fill slide--wide" aria-label="Account Diagnosis">
+            <div class="slide-inner">
+                <h2 class="heading-lg heading--recede reveal">What We Believe Is Happening</h2>
+
+                <div class="diagnosis-hypothesis reveal" id="diagnosisStage" style="transition-delay:0.12s">
+                    <div class="diagnosis-empty" id="diagnosisEmpty">
+                        No account diagnosis loaded.
+                        <small>Add ?prospect=slug to the URL for a deck with public-footprint diagnosis.</small>
+                    </div>
+                </div>
+
+                <!-- Internal note: Treat this as a working hypothesis. The goal on the call is to validate or break it. -->
+            </div>
+        </section>
+
+        <!-- SLIDE 4: ACCOUNT DIAGNOSIS — EVIDENCE -->
+        <section class="slide slide--fill slide--wide" aria-label="Diagnosis Evidence">
+            <div class="slide-inner">
+                <h2 class="heading-lg reveal">The Evidence Behind This</h2>
+
+                <div class="diagnosis-side reveal" id="diagnosisEvidence" style="transition-delay:0.12s">
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 5: LIVE PROOF -->
+        <section class="slide slide--wide" aria-label="Live Proof">
+            <div class="slide-inner">
+                <h2 class="heading-lg reveal">What This Looks Like For <span id="companyName" style="color:var(--accent)">You</span></h2>
+
+                <div class="prospect-stage reveal" id="prospectStage" style="transition-delay:0.12s">
+                    <div class="empty-state" id="prospectEmpty">
+                        No prospect data loaded.
+                        <small>Add ?prospect=slug to the URL for live pre-call research.</small>
+                    </div>
+                </div>
+                <nav class="prospect-nav reveal" id="prospectNav" style="transition-delay:0.18s;display:none" aria-label="Prospect navigation">
+                    <button class="prospect-nav-btn" id="prevProspect" aria-label="Previous prospect">&larr; Prev</button>
+                    <span class="prospect-counter" id="prospectCounter">1 / 3</span>
+                    <button class="prospect-nav-btn" id="nextProspect" aria-label="Next prospect">Next &rarr;</button>
+                </nav>
+
+                <p class="prompt reveal" style="transition-delay:0.25s">
+                    This is exactly what your outbound would look like &mdash; <strong>day one.</strong>
+                </p>
+            </div>
+        </section>
+
+        <!-- SLIDE 6: ROI CALCULATOR -->
+        <section class="slide slide--wide" aria-label="ROI Calculator">
+            <div class="slide-inner">
+                <h2 class="heading-lg reveal">The Numbers</h2>
+
+                <div class="calc-layout reveal" style="transition-delay:0.12s">
+                    <div class="calc-inputs">
+                        <div class="input-group">
+                            <label for="calcDealSize">Average Deal Size</label>
+                            <div class="input-wrap">
+                                <span class="input-pre" aria-hidden="true">$</span>
+                                <input type="number" id="calcDealSize" value="25000" min="1000" max="10000000" step="1000" aria-label="Average deal size in dollars">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="calcCloseRate">Close Rate</label>
+                            <div class="input-wrap">
+                                <input type="number" id="calcCloseRate" value="25" min="1" max="100" step="1" style="padding-left:0.8rem" aria-label="Close rate as percentage">
+                                <span class="input-suf" aria-hidden="true">%</span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="calcVolume">Monthly Email Volume</label>
+                            <div class="input-wrap">
+                                <input type="number" id="calcVolume" value="10000" min="1000" max="100000" step="1000" style="padding-left:0.8rem" aria-label="Monthly email volume">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="calcPrice">Our Price (Monthly)</label>
+                            <div class="input-wrap">
+                                <span class="input-pre" aria-hidden="true">$</span>
+                                <input type="number" id="calcPrice" value="3500" min="500" max="50000" step="100" aria-label="Monthly price in dollars">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="funnel">
+                        <div class="funnel-row">
+                            <span class="funnel-label">Emails Sent</span>
+                            <span class="funnel-val"><span id="outVolume">10,000</span></span>
+                        </div>
+                        <div class="funnel-row">
+                            <span class="funnel-label">Replies</span>
+                            <span class="funnel-val"><span id="outReplies">200</span> <span class="funnel-rate">2%</span></span>
+                        </div>
+                        <div class="funnel-row">
+                            <span class="funnel-label">Positive Replies</span>
+                            <span class="funnel-val"><span id="outPositive">10</span> <span class="funnel-rate">5%</span></span>
+                        </div>
+                        <div class="funnel-row">
+                            <span class="funnel-label">Meetings Booked</span>
+                            <span class="funnel-val"><span id="outMeetings">7</span> <span class="funnel-rate">70% show</span></span>
+                        </div>
+                        <div class="funnel-row">
+                            <span class="funnel-label">Closed Deals</span>
+                            <span class="funnel-val"><span id="outDeals">2</span> <span class="funnel-rate" id="outCloseRate">25%</span></span>
+                        </div>
+                        <div class="funnel-row revenue">
+                            <span class="funnel-label">Projected Monthly Revenue</span>
+                            <span class="funnel-val">$<span id="outRevenue">43,750</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 7: THE INVESTMENT -->
+        <section class="slide slide--wide" aria-label="Investment">
+            <div class="slide-inner">
+                <h2 class="heading-lg reveal">The Investment</h2>
+
+                <div class="pricing-split reveal" style="transition-delay:0.12s">
+                    <div class="price-us">
+                        <span class="price-label">Move Partners</span>
+                        <div class="price-amount">$<span id="outPriceDisplay">3,500</span></div>
+                        <span class="price-desc">Setup + Monthly</span>
+                    </div>
+                    <div class="price-them">
+                        <span class="price-label">Hire In-House SDR</span>
+                        <div class="price-amount">$100-150K+</div>
+                        <span class="price-desc">/year</span>
+                        <div class="breakdown">
+                            Salary $65-85K<br>
+                            Tools &amp; data $15-25K<br>
+                            Management overhead<br>
+                            3-6 month ramp time
+                        </div>
+                    </div>
+                </div>
+
+                <div class="roi-badge reveal" style="transition-delay:0.2s" id="outRoi">12x ROI</div>
+
+                <p class="prompt reveal" style="transition-delay:0.28s">
+                    Does this align with what you're looking to invest?
+                </p>
+            </div>
+        </section>
+
+        <!-- SLIDE 8: 90-DAY ROADMAP -->
+        <section class="slide slide--wide" aria-label="90-Day Roadmap">
+            <div class="slide-inner">
+                <h2 class="heading-lg reveal">90-Day Roadmap</h2>
+
+                <div class="timeline reveal" style="transition-delay:0.12s">
+                    <div class="tl-item">
+                        <div class="tl-time">Week 1-2</div>
+                        <div class="tl-desc">Onboarding + ICP definition + domain setup</div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-time">Week 3-4</div>
+                        <div class="tl-desc">Infrastructure live + first lead lists built</div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-time">Month 2</div>
+                        <div class="tl-desc">Campaigns launch + first replies land</div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-time">Month 3</div>
+                        <div class="tl-desc">Optimization + velocity ramps up</div>
+                    </div>
+                </div>
+
+                <p class="prompt reveal" style="transition-delay:0.2s">
+                    Do you see how this gets you closer to your goal?
+                </p>
+            </div>
+        </section>
+
+        <!-- SLIDE 9: NEXT STEPS -->
+        <section class="slide slide--wide" aria-label="Next Steps">
+            <div class="slide-inner">
+                <h2 class="heading-lg reveal">What Happens Next</h2>
+
+                <div class="checklist reveal" style="transition-delay:0.12s">
+                    <div class="check-item"><span class="check-num">01</span> Complete onboarding payment</div>
+                    <div class="check-item"><span class="check-num">02</span> Sign onboarding agreement (DocuSign)</div>
+                    <div class="check-item"><span class="check-num">03</span> Join your Slack workspace</div>
+                    <div class="check-item"><span class="check-num">04</span> Kick-off call within 48 hours</div>
+                    <div class="check-item"><span class="check-num">05</span> ICP definition session (Week 1)</div>
+                    <div class="check-item"><span class="check-num">06</span> Domain infrastructure setup begins</div>
+                </div>
+
+                <div class="cta reveal" style="transition-delay:0.2s">
+                    Ready to get started?
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- OBJECTION PANEL (press O) -->
+    <div class="objection-panel" id="objectionPanel" role="dialog" aria-label="Objection Playbook" aria-hidden="true">
+        <button class="close-btn" onclick="togglePanel(false)" aria-label="Close objection panel">&times;</button>
+        <div class="panel-inner">
+            <h2 class="panel-heading">Objection Playbook</h2>
+            <div class="obj-grid">
+                <div class="obj-section">
+                    <h3>XYZ Aside</h3>
+                    <p>Isolate the real objection before solving it:</p>
+                    <p class="obj-script">
+                        "I hear you on [X]. [X] aside, do you actually think this would help you hit [goal]?"
+                    </p>
+                </div>
+
+                <div class="obj-section">
+                    <h3>"I Need to Think About It"</h3>
+                    <ol>
+                        <li><strong>Empathize:</strong> "Totally fair."</li>
+                        <li><strong>Test belief:</strong> "Do you feel this would actually help you get to [goal]?"</li>
+                        <li><strong>Isolate:</strong> "What specifically do you need to think about?"</li>
+                        <li><strong>Handle:</strong> Address the real concern.</li>
+                        <li><strong>Compress timeline:</strong> "When would you have an answer &mdash; tomorrow morning?"</li>
+                        <li><strong>Set accountability:</strong> "Cool, I'll call you at 10am."</li>
+                    </ol>
+                </div>
+
+                <div class="obj-section">
+                    <h3>Top 3 Objections</h3>
+                    <p><strong>"We've tried outbound before"</strong><br>Bad date analogy: one bad date doesn't mean you give up dating forever.</p>
+                    <p><strong>"Our market is too niche"</strong><br>Show Slide 5 (Live Proof). We already proved we can find them.</p>
+                    <p><strong>"How do I know meetings are qualified?"</strong><br>Because you define the ICP. You saw the rigorous targeting.</p>
+                </div>
+
+                <div class="obj-section">
+                    <h3>Analogies</h3>
+                    <ul>
+                        <li><strong>Bad date:</strong> One bad experience doesn't mean the channel is broken.</li>
+                        <li><strong>Finding your wife:</strong> Would you give up after one bad relationship?</li>
+                        <li><strong>Car with no oil:</strong> Your pipeline will seize without consistent outbound.</li>
+                        <li><strong>Ferrari for $30K:</strong> If it seems too good to be true, but the proof is right there...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- State ---
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const container = document.getElementById('deckContainer');
+        let isPanelOpen = false;
+
+        // --- Navigation Dots ---
+        const dotsContainer = document.getElementById('navDots');
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('button');
+            dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+            dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+            dot.onclick = () => goToSlide(i);
+            dotsContainer.appendChild(dot);
+        }
+        const dots = document.querySelectorAll('.nav-dot');
+
+        function updateNav() {
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+                dot.setAttribute('aria-current', i === currentSlide ? 'step' : 'false');
+            });
+            document.getElementById('slideCounter').textContent = (currentSlide + 1) + ' / ' + totalSlides;
+        }
+
+        function goToSlide(index) {
+            if (isPanelOpen || index < 0 || index >= totalSlides) return;
+            slides[index].scrollIntoView({ behavior: 'smooth' });
+            currentSlide = index;
+            updateNav();
+        }
+
+        // --- Intersection Observer ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+                    const index = Array.from(slides).indexOf(entry.target);
+                    if (index !== -1 && index !== currentSlide) {
+                        currentSlide = index;
+                        updateNav();
+                    }
+                }
+            });
+        }, { threshold: 0.3 });
+        slides.forEach(slide => observer.observe(slide));
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            const ro = new IntersectionObserver((entries) => {
+                entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+            }, { threshold: 0.2 });
+            ro.observe(el);
+        });
+
+        // --- Keyboard ---
+        window.addEventListener('keydown', (e) => {
+            if (isPanelOpen && e.key === 'Escape') { togglePanel(false); return; }
+            if (isPanelOpen) return;
+            if (e.target.tagName === 'INPUT') return;
+
+            if (e.key === 'o' || e.key === 'O') { togglePanel(true); return; }
+
+            // On live-proof slide with prospects loaded, arrow keys cycle prospects first
+            if (currentSlide === 4 && prospectCount > 1) {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (prospectIndex < prospectCount - 1) { showProspect(prospectIndex + 1); return; }
+                    else { goToSlide(currentSlide + 1); return; }
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (prospectIndex > 0) { showProspect(prospectIndex - 1); return; }
+                    else { goToSlide(currentSlide - 1); return; }
+                }
+            }
+
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); goToSlide(currentSlide + 1); }
+            else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goToSlide(currentSlide - 1); }
+        });
+
+        // --- Scroll Sync ---
+        let scrollTimeout;
+        container.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                let closest = 0, minDiff = Infinity;
+                slides.forEach((s, i) => {
+                    const d = Math.abs(s.getBoundingClientRect().top);
+                    if (d < minDiff) { minDiff = d; closest = i; }
+                });
+                if (currentSlide !== closest) { currentSlide = closest; updateNav(); }
+            }, 100);
+        });
+
+        // --- Objection Panel ---
+        function togglePanel(open) {
+            isPanelOpen = open;
+            const panel = document.getElementById('objectionPanel');
+            panel.classList.toggle('open', open);
+            panel.setAttribute('aria-hidden', !open);
+            if (open) panel.querySelector('.close-btn').focus();
+        }
+
+        // --- Calculator ---
+        function fmt(n) { return n.toLocaleString('en-US'); }
+
+        function clampVal(el) {
+            const v = parseFloat(el.value);
+            const min = parseFloat(el.min);
+            const max = parseFloat(el.max);
+            if (!isNaN(min) && v < min) el.value = min;
+            if (!isNaN(max) && v > max) el.value = max;
+        }
+
+        function updateCalculator() {
+            const dealSize = parseFloat(document.getElementById('calcDealSize').value) || 0;
+            const closeRate = Math.min(100, Math.max(0, parseFloat(document.getElementById('calcCloseRate').value) || 0));
+            const volume = parseFloat(document.getElementById('calcVolume').value) || 0;
+            const price = parseFloat(document.getElementById('calcPrice').value) || 0;
+
+            const replies = Math.round(volume * 0.02);
+            const positive = Math.round(replies * 0.05);
+            const meetings = Math.round(positive * 0.70);
+            const deals = meetings * (closeRate / 100);
+            const dealsRounded = Math.round(deals);
+            const revenue = deals * dealSize;
+            const roi = price > 0 ? (revenue / price) : 0;
+
+            document.getElementById('outVolume').textContent = fmt(volume);
+            document.getElementById('outReplies').textContent = fmt(replies);
+            document.getElementById('outPositive').textContent = fmt(positive);
+            document.getElementById('outMeetings').textContent = fmt(meetings);
+            document.getElementById('outDeals').textContent = dealsRounded;
+            document.getElementById('outCloseRate').textContent = closeRate + '%';
+            document.getElementById('outRevenue').textContent = fmt(Math.round(revenue));
+            document.getElementById('outPriceDisplay').textContent = fmt(price);
+            document.getElementById('outRoi').textContent = Math.round(roi) + 'x ROI';
+        }
+
+        ['calcDealSize', 'calcCloseRate', 'calcVolume', 'calcPrice'].forEach(id => {
+            const el = document.getElementById(id);
+            el.addEventListener('input', updateCalculator);
+            el.addEventListener('blur', () => { clampVal(el); updateCalculator(); });
+        });
+        updateCalculator();
+
+        // --- Prospect Loader ---
+        function escapeHTML(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function fetchProspectData(slug) {
+            const encodedSlug = encodeURIComponent(slug);
+            const candidatePaths = [
+                '/api/public-sales-decks/' + encodedSlug
+            ];
+
+            let lastError = new Error('Prospect data not found');
+
+            return candidatePaths.reduce((chain, path) => {
+                return chain.catch(() => {
+                    return fetch(path, { cache: 'no-store' }).then(response => {
+                        if (!response.ok) {
+                            throw new Error('Not found: ' + path);
+                        }
+                        return response.json();
+                    });
+                });
+            }, Promise.reject(lastError));
+        }
+
+        function showProspectError(slug) {
+            const stage = document.getElementById('prospectStage');
+            stage.innerHTML =
+                '<div class="empty-state">Could not load prospect data for &ldquo;' + escapeHTML(slug) + '&rdquo;.<small>Checked pre-call/ and output/pre-call/.</small></div>';
+            stage.style.minHeight = '';
+            document.getElementById('prospectNav').style.display = 'none';
+        }
+
+        function truncateText(value, maxLength) {
+            const text = String(value || '').trim().replace(/\s+/g, ' ');
+            if (!text || text.length <= maxLength) return text;
+            return text.slice(0, maxLength - 1).trimEnd() + '…';
+        }
+
+        function renderAccountDiagnosis(diagnosis) {
+            const hypothesisStage = document.getElementById('diagnosisStage');
+            const evidenceStage = document.getElementById('diagnosisEvidence');
+            const empty = document.getElementById('diagnosisEmpty');
+            if (!diagnosis) return;
+
+            const evidence = Array.isArray(diagnosis.evidence) ? diagnosis.evidence.filter(item => item && item.detail) : [];
+            const questions = Array.isArray(diagnosis.questions_to_validate) ? diagnosis.questions_to_validate.filter(Boolean) : [];
+            const risks = Array.isArray(diagnosis.risks_to_thesis) ? diagnosis.risks_to_thesis.filter(Boolean) : [];
+            const hasContent =
+                (diagnosis.constraint_thesis && diagnosis.constraint_thesis.trim()) ||
+                (diagnosis.why_now && diagnosis.why_now.trim()) ||
+                evidence.length ||
+                (diagnosis.competitive_gap && diagnosis.competitive_gap.trim()) ||
+                questions.length ||
+                risks.length;
+
+            if (!hasContent) return;
+            if (empty) empty.remove();
+
+            /* ── Slide 3: Hypothesis (billboard) ── */
+            var gapHtml = '';
+            if (diagnosis.competitive_gap && diagnosis.competitive_gap.trim()) {
+                gapHtml =
+                    '<div class="diagnosis-gap-aside">' +
+                        '<div class="diagnosis-gap-label">Competitive gap</div>' +
+                        '<div class="diagnosis-gap-text">' + escapeHTML(truncateText(diagnosis.competitive_gap, 160)) + '</div>' +
+                    '</div>';
+            }
+
+            hypothesisStage.innerHTML =
+                '<div class="diagnosis-claim">' +
+                    '<div class="diagnosis-kicker">Public-Footprint Hypothesis</div>' +
+                    '<div class="diagnosis-thesis">' + escapeHTML(diagnosis.constraint_thesis || 'We identified a likely go-to-market constraint worth validating on the call.') + '</div>' +
+                '</div>' +
+                '<div class="diagnosis-support">' +
+                    '<div class="diagnosis-why">' + escapeHTML(diagnosis.why_now || '') + '</div>' +
+                    gapHtml +
+                '</div>';
+
+            /* ── Slide 4: Evidence (scannable) ── */
+            if (!evidenceStage) return;
+
+            var evidenceHtml = evidence.length
+                ? evidence.map(function(item) {
+                    return '<li>' +
+                        (item.label ? '<span class="diagnosis-label">' + escapeHTML(item.label) + '</span> ' : '') +
+                        escapeHTML(truncateText(item.detail, 250)) +
+                    '</li>';
+                }).join('')
+                : '<li>Limited public evidence found.</li>';
+
+            var questionHtml = questions.length
+                ? questions.map(function(item) { return '<li>' + escapeHTML(truncateText(item, 200)) + '</li>'; }).join('')
+                : '<li>What would make this directionally wrong?</li>';
+
+            var riskHtml = risks.length
+                ? risks.map(function(item) { return '<p>' + escapeHTML(truncateText(item, 200)) + '</p>'; }).join('')
+                : '<p>No major disconfirming evidence surfaced.</p>';
+
+            evidenceStage.innerHTML =
+                '<div class="diagnosis-card">' +
+                    '<h3>Signals</h3>' +
+                    '<ul class="diagnosis-list">' + evidenceHtml + '</ul>' +
+                '</div>' +
+                '<div class="diagnosis-card">' +
+                    '<h3>Questions for the Call</h3>' +
+                    '<ul class="diagnosis-q-list">' + questionHtml + '</ul>' +
+                '</div>' +
+                '<div class="diagnosis-caveat">' +
+                    '<div class="diagnosis-caveat-label">What could make this wrong</div>' +
+                    '<div class="diagnosis-risk-inline">' + riskHtml + '</div>' +
+                '</div>';
+        }
+
+        function loadProspects() {
+            const pathMatch = window.location.pathname.match(/\/deck\/([^/?#]+)/);
+            const slug = pathMatch ? pathMatch[1] : new URLSearchParams(window.location.search).get('prospect');
+            if (!slug) return;
+
+            fetchProspectData(slug)
+                .then(renderProspects)
+                .catch(() => showProspectError(slug));
+        }
+
+        let prospectIndex = 0;
+        let prospectCount = 0;
+
+        function renderProspects(data) {
+            if (data.company) document.getElementById('companyName').textContent = data.company;
+            renderAccountDiagnosis(data.account_diagnosis || null);
+
+            const stage = document.getElementById('prospectStage');
+            if (!data.prospects || data.prospects.length === 0) return;
+
+            // Remove empty state
+            const empty = document.getElementById('prospectEmpty');
+            if (empty) empty.remove();
+
+            prospectCount = Math.min(3, data.prospects.length);
+            for (let i = 0; i < prospectCount; i++) {
+                const p = data.prospects[i];
+                const paragraphs = escapeHTML(p.message || '')
+                    .split(/\n\n|\n/)
+                    .filter(s => s.trim())
+                    .map(s => '<p>' + s + '</p>')
+                    .join('');
+
+                const card = document.createElement('div');
+                card.className = 'p-card' + (i === 0 ? ' visible' : '');
+                card.innerHTML =
+                    '<div>' +
+                        '<div class="p-card-name">' + escapeHTML(p.name) + '</div>' +
+                        '<div class="p-card-title">' + escapeHTML(p.title) + (p.company ? ' &middot; ' + escapeHTML(p.company) : '') + '</div>' +
+                    '</div>' +
+                    '<div class="p-card-msg">' + paragraphs + '</div>';
+                stage.appendChild(card);
+            }
+
+            // Size the stage to the tallest card so layout never shifts
+            requestAnimationFrame(() => {
+                const cards = stage.querySelectorAll('.p-card');
+                let maxH = 0;
+                cards.forEach(c => {
+                    c.style.position = 'relative';
+                    c.style.opacity = '1';
+                    maxH = Math.max(maxH, c.offsetHeight);
+                    c.style.position = '';
+                    c.style.opacity = '';
+                });
+                stage.style.minHeight = maxH + 'px';
+            });
+
+            // Show nav if more than one prospect
+            if (prospectCount > 1) {
+                document.getElementById('prospectNav').style.display = 'flex';
+                updateProspectNav();
+            }
+        }
+
+        function showProspect(index) {
+            const cards = document.querySelectorAll('.p-card');
+            cards.forEach(c => c.classList.remove('visible'));
+            prospectIndex = index;
+            // Small delay for transition effect
+            requestAnimationFrame(() => {
+                cards[prospectIndex].classList.add('visible');
+            });
+            updateProspectNav();
+        }
+
+        function updateProspectNav() {
+            document.getElementById('prospectCounter').textContent = (prospectIndex + 1) + ' / ' + prospectCount;
+            document.getElementById('prevProspect').disabled = prospectIndex === 0;
+            document.getElementById('nextProspect').disabled = prospectIndex === prospectCount - 1;
+        }
+
+        document.getElementById('prevProspect').addEventListener('click', () => {
+            if (prospectIndex > 0) showProspect(prospectIndex - 1);
+        });
+        document.getElementById('nextProspect').addEventListener('click', () => {
+            if (prospectIndex < prospectCount - 1) showProspect(prospectIndex + 1);
+        });
+
+        loadProspects();
+    </script>
+</body>
+</html>

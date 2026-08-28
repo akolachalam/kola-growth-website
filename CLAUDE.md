@@ -1,38 +1,38 @@
-# Kola Growth Agency Website
+# kolagrowthagency.com
 
-Static site for [kolagrowthagency.com](https://kolagrowthagency.com). Hosted on Vercel, auto-deploys on push.
+This repository no longer serves a marketing site. Kola Growth Agency's
+outbound-agency pages were retired on 2026-08-28. The domain now redirects to
+kolaautomations.com, which is the active business.
 
-## Design System
+## What this repository still does
 
-**Always use Impeccable skills for design work** — they're installed globally at `~/.claude/skills/`. Start with `frontend-design`, layer on others as needed.
+One thing: it delivers shareable sales decks at `kolagrowthagency.com/deck/<slug>`.
 
-### Brand Personality
-**Confident, warm, premium.** Not corporate-stiff, not startup-casual. Senior advisor who knows what they're doing — no hedging, no fluff.
+- `_deck-shell.html` renders a deck in the browser. It is self-contained apart
+  from Google Fonts.
+- `api/public-sales-decks/[slug].js` reads the deck payload from Supabase.
+- `vercel.json` rewrites `/deck/:slug` to the shell and redirects everything
+  else off the domain.
 
-### Aesthetic Direction
-- **Light editorial mode** — warm cream backgrounds (`oklch(0.97 0.008 75)`), never dark-mode-by-default
-- **Copper accent** (`oklch(0.48 0.16 50)`) — warm, distinctive, NOT cyan/purple AI slop
-- **Sora** (display, 700-800) + **DM Sans** (body, 400-600) — never Inter, Roboto, or system fonts
-- **Left-aligned, asymmetric layouts** — break the centered-everything pattern
-- **Thin borders over shadows** — `1px solid var(--border)`, not drop shadows on rounded rectangles
-- **Warm noise texture overlay** — subtle `fractalNoise` SVG at 2.5% opacity, multiply blend
+The deck route was deliberately excluded from the redirect so that links already
+shared with clients keep working. If those links are no longer needed, remove the
+exclusion from the redirect source in `vercel.json` and the whole domain will
+redirect.
 
-### Design Principles
-1. **Clarity over decoration** — every element earns its place
-2. **Content-first hierarchy** — typography and spacing, not color or effects
-3. **Warm, not dark** — light backgrounds with warm-tinted neutrals
-4. **Editorial restraint** — one accent color, two font families, 6px radius
-5. **Anti-slop by default** — if it looks like "AI made this," redesign it
+## Configuration
 
-### Tokens
-See `design-system.css` for the full shared CSS with all tokens, components, and responsive breakpoints.
-
-## Files
-- `index.html` — single-page site (hero, problem, system, results, why us, process, FAQ, CTA)
-- `design-system.css` — shared tokens, typography, components (can be linked from future pages)
+The deck API reads three environment variables from Vercel project settings, not
+from this repository: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and
+`PUBLIC_SALES_DECKS_TABLE`. This repository is public. Never commit those values
+or any other credential to it.
 
 ## Deployment
-- **Host:** Vercel (hobby plan)
-- **Repo:** `akolachalam/kola-growth-website`
-- **Domain:** `kolagrowthagency.com` (DNS at GoDaddy, A record → Vercel)
-- **Auto-deploy:** push to `main` triggers deploy
+
+Hosted on Vercel, project `kola-growth-website`, auto-deploying from `main`.
+A push to `main` publishes to the live domain, so changes go through a pull
+request and a preview first.
+
+## Where the active site lives
+
+kolaautomations.com is served from `akolachalam/kola-automations-website`. Work
+on the live business belongs there, not here.

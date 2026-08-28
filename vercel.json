@@ -2,12 +2,9 @@
   "cleanUrls": true,
   "redirects": [
     {
-      "source": "/((?!deck/|api/).*)",
+      "source": "/(.*)",
       "destination": "https://www.kolaautomations.com/",
       "permanent": true
     }
-  ],
-  "rewrites": [
-    { "source": "/deck/:slug", "destination": "/_deck-shell" }
   ]
 }

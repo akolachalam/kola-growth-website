@@ -1,38 +1,46 @@
 # kolagrowthagency.com
 
-This repository no longer serves a marketing site. Kola Growth Agency's
-outbound-agency pages were retired on 2026-08-28. The domain now redirects to
-kolaautomations.com, which is the active business.
+This repository serves no site. Kola Growth Agency's outbound pages were retired
+on 2026-08-28, and the domain now redirects every path to kolaautomations.com,
+which is the active business.
 
-## What this repository still does
+## What is here
 
-One thing: it delivers shareable sales decks at `kolagrowthagency.com/deck/<slug>`.
+`vercel.json`, containing a single permanent redirect. Nothing else.
 
-- `_deck-shell.html` renders a deck in the browser. It is self-contained apart
-  from Google Fonts.
-- `api/public-sales-decks/[slug].js` reads the deck payload from Supabase.
-- `vercel.json` rewrites `/deck/:slug` to the shell and redirects everything
-  else off the domain.
+## What was removed, and why
 
-The deck route was deliberately excluded from the redirect so that links already
-shared with clients keep working. If those links are no longer needed, remove the
-exclusion from the redirect source in `vercel.json` and the whole domain will
-redirect.
+The marketing pages (`index.html`, `case-studies.html`, `thank-you.html`)
+published outbound service copy along with pipeline metrics and a client
+testimonial.
 
-## Configuration
+A per-prospect sales deck at `/deck/<slug>`, backed by
+`_deck-shell.html` and `api/public-sales-decks/[slug].js`, rendered the same
+outbound pitch with prospect research loaded from Supabase. It was briefly kept
+alive on the assumption that shared links might still be in use. They were not,
+and its Supabase backend had already stopped responding. Keeping it would have
+left the last page selling outbound services standing on a domain that was
+supposed to stop doing that.
 
-The deck API reads three environment variables from Vercel project settings, not
-from this repository: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and
-`PUBLIC_SALES_DECKS_TABLE`. This repository is public. Never commit those values
-or any other credential to it.
+Everything above remains in git history if it is ever needed again.
+
+## Loose ends this left behind
+
+The Supabase project holding the `public_sales_decks` table is now unused by
+anything. It was not touched here, because deleting a database is not a cleanup
+task to perform in passing. Decide on it deliberately.
+
+Three environment variables remain configured on the Vercel project and no
+longer have a consumer: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and
+`PUBLIC_SALES_DECKS_TABLE`. The service role key is a live credential with full
+database access. Removing it from the project, and rotating it in Supabase, is
+worth doing rather than leaving it configured against nothing.
 
 ## Deployment
 
-Hosted on Vercel, project `kola-growth-website`, auto-deploying from `main`.
-A push to `main` publishes to the live domain, so changes go through a pull
-request and a preview first.
+Hosted on Vercel, projects `kola-growth-website` and `kola-growth-b2b`, both
+auto-deploying from `main`.
 
 ## Where the active site lives
 
-kolaautomations.com is served from `akolachalam/kola-automations-website`. Work
-on the live business belongs there, not here.
+kolaautomations.com is served from `akolachalam/kola-automations-website`.
